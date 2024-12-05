@@ -41,10 +41,9 @@ public class VacatureConfiguration : IEntityTypeConfiguration<Vacature>
         builder.Property(vacature => vacature.Industry)
 	        .IsRequired(false)
 	        .HasMaxLength(128);
-        
+
         builder.Property(vacature => vacature.ListPriority)
-	        .IsRequired(false)
-	        .HasMaxLength(3);
+	        .IsRequired(false);
         
         builder.Property(vacature => vacature.Description)
 	        .IsRequired();

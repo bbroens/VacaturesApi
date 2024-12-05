@@ -8,22 +8,22 @@
 
 public class Vacature
 {
-    public Guid VacatureId { get; init; }
+    public Guid VacatureId { get; set; }
     
-    public string UrlSlug { get; init; } = string.Empty;
-    public string FunctionTitle { get; init; } = string.Empty;
-    public string Availability { get; init; } = string.Empty;
-    public string Location { get; init; } = string.Empty;
-    public string ContactPerson { get; init; } = string.Empty;
-	public string Description { get; init; } = string.Empty;
-	public string WhatToExpect { get; init; } = string.Empty;
-	public string Responsibilities { get; init; } = string.Empty;
-	public string Offer { get; init; } = string.Empty;
-	public string Requirements { get; init; } = string.Empty;
-	public string? SalaryRange { get; init; } = string.Empty;
-    public string? Industry { get; init; } = string.Empty;
-    public int? ListPriority { get; init; } = 0;
-    public bool? Hidden { get; init; } = false;
-    public DateTime CreatedAt { get; init; }
+    public string UrlSlug { get; set; } = string.Empty;
+    public string FunctionTitle { get; set; } = string.Empty;
+    public string Availability { get; set; } = string.Empty;
+    public string Location { get; set; } = string.Empty;
+    public string ContactPerson { get; set; } = string.Empty;
+	public string Description { get; set; } = string.Empty;
+	public string WhatToExpect { get; set; } = string.Empty;
+	public string Responsibilities { get; set; } = string.Empty;
+	public string Offer { get; set; } = string.Empty;
+	public string Requirements { get; set; } = string.Empty;
+	public string? SalaryRange { get; set; } = string.Empty;
+    public string? Industry { get; set; } = string.Empty;
+    public int? ListPriority { get; set; } = 0;
+    public bool? Hidden { get; set; } = false;
+    public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }
