@@ -1,0 +1,6 @@
+@ostAddress = http://localhost:5001
+
+GET {{HostAddress}}/
+Accept: application/json
+
+###
