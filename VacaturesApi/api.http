@@ -1,6 +1,26 @@
-@ostAddress = http://localhost:5001
+@HostAddress = https://localhost:5001
 
-GET {{HostAddress}}/
-Accept: application/json
+### Fetch a vacature by VacatureId
+GET {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
 
-###
+### Post a new vacature
+POST {{HostAddress}}/api/vacatures
+Content-Type: application/json
+
+{
+  "VacatureId": "e349a619-c06c-4ae4-85e0-b7064d6af44e",
+  "UrlSlug": "junior-software-engineer-net",
+  "FunctionTitle": "Senior Software Engineer (.NET)",
+  "Availability": "Full-time",
+  "Location": "Utrecht, Netherlands",
+  "ContactPerson": "Jane Doe",
+  "Description": "We are looking for an experienced .NET developer to join our team.",
+  "WhatToExpect": "Challenging projects, modern tech stack, great team culture",
+  "Responsibilities": "Develop and maintain .NET applications, mentor junior developers",
+  "Offer": "Competitive salary, professional growth, flexible working hours",
+  "Requirements": "5+ years of .NET development, strong C# skills, microservices experience",
+  "SalaryRange": "€70,000 - €90,000",
+  "Industry": "Technology",
+  "ListPriority": 1,
+  "Hidden": false
+}

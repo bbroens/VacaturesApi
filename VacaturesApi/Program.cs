@@ -1,6 +1,7 @@
 using Serilog;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Features.Vacatures;
@@ -37,6 +38,9 @@ try
     builder.Services.AddDbContext<VacatureDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("VacatureDbConnection")));
 
+    // Register automapper
+    builder.Services.AddAutoMapper(typeof(Program).Assembly);
+    
     // Register MediatR
     builder.Services.AddMediatR(cfg => 
         cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
@@ -57,6 +61,9 @@ try
         var dbContext = scope.ServiceProvider.GetRequiredService<VacatureDbContext>();
         DataSeeder.Seed(dbContext);
     }
+    
+    // Add global exception handling middleware
+    app.UseMiddleware<GlobalExceptionHandler>();
 
     // Configure the HTTP request pipeline
     if (app.Environment.IsProduction())

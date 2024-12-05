@@ -1,6 +1,5 @@
-﻿namespace VacaturesApi.Features.Vacatures.Get;
+﻿using MediatR;
 
-public class GetVacatureByIdQuery
-{
-    
-}
+namespace VacaturesApi.Features.Vacatures.Get;
+
+public record GetVacatureByIdQuery(Guid VacatureId) : IRequest<VacatureDto>;
