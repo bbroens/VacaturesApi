@@ -1,7 +1,8 @@
 using Serilog;
-using System.Reflection;
-using FluentValidation;
 using MediatR;
+using FluentValidation;
+using System.Reflection;
+using System.Threading.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
@@ -58,6 +59,28 @@ try
     // This allows MediatR to instance handlers with their dependencies at runtime.
     builder.Services.AddMediatR(cfg => 
         cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+    
+    // Add and configure global rate limiter for the API.
+    // This will limit an IP address to making 100 requests per minute.
+    builder.Services.AddRateLimiter(options =>
+    {
+        options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
+                factory: partition => new FixedWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 100,
+                    QueueLimit = 0,
+                    Window = TimeSpan.FromMinutes(1)
+                }));
+
+        options.OnRejected = async (context, token) =>
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
+        };
+    });
 
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
@@ -84,6 +107,8 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+    
+    app.UseRateLimiter();
     
     app.UseSwagger();
     

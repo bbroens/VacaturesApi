@@ -31,12 +31,19 @@ public class VacatureRepository : IVacatureRepository
         return vacature;
     }
 
-    public async Task<List<Vacature>> ListAsync(CancellationToken cancellationToken)
+    public async Task<List<Vacature>> ListAsync(int page, int pageSize, CancellationToken cancellationToken)
     {
         return await _context.Vacatures
             .AsNoTracking()
             .OrderByDescending(v => v.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync(cancellationToken);
+    }
+    
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+    {
+        return await _context.Vacatures.CountAsync(cancellationToken);
     }
 
     public async Task<Vacature> AddAsync(Vacature vacature, CancellationToken cancellationToken)
