@@ -6,7 +6,6 @@ public class GlobalExceptionHandler : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        Log.Error("_______________USED GLOBAL HANDLER_________________");
         try
         {
             // Continue processing the request
