@@ -17,7 +17,7 @@ public class GetVacatureByIdEndpoint : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{VacatureId:guid}")]
+    [HttpGet("{vacatureId:guid}")]
     [ProducesResponseType(typeof(VacatureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<VacatureDto>> GetVacatureById(
