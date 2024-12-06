@@ -1,9 +1,11 @@
 using Serilog;
 using System.Reflection;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
+using VacaturesApi.Common.Validation;
 using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
 
@@ -30,6 +32,9 @@ try
         .WriteTo.Console()
         .WriteTo.File("Logs/logs-vacaturesapi-.txt", rollingInterval: RollingInterval.Day));    
 
+    // Register global exception handler
+    builder.Services.AddScoped<GlobalExceptionHandler>();
+    
     // Add services for controllers
     builder.Services.AddControllers();
 
@@ -37,6 +42,10 @@ try
     builder.Services.AddDbContext<VacatureDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("VacatureDbConnection")));
 
+    // Add FluentValidation
+    builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+    builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    
     // Register Automapper
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     

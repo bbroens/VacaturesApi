@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using VacaturesApi.Common.Exceptions;
 
 namespace VacaturesApi.Features.Vacatures.Delete;
 
@@ -26,17 +25,9 @@ public class DeleteVacatureEndpoint : ControllerBase
         Guid vacatureId, 
         CancellationToken cancellationToken)
     {
-        try
-        {
-            Log.Information("Requested to delete vacature with id: {vacatureId}", vacatureId);
-            var command = new DeleteVacatureCommand(vacatureId);
-            await _mediator.Send(command, cancellationToken);
-            return NoContent();
-        }
-        catch (NotFoundException)
-        {
-            Log.Warning("Vacature not found with id: {Id}", vacatureId);
-            return NotFound();
-        }
+        Log.Information("Requested to delete vacature with id: {vacatureId}", vacatureId);
+        var command = new DeleteVacatureCommand(vacatureId);
+        await _mediator.Send(command, cancellationToken);
+        return NoContent();
     }
 }

@@ -21,16 +21,8 @@ public class CreateVacatureEndpoint : ControllerBase
         [FromBody] CreateVacatureCommand command, 
         CancellationToken cancellationToken)
     {
-        try
-        {
-            Log.Information("Creating new vacature: {FunctionTitle}", command.FunctionTitle);
-            var result = await _mediator.Send(command, cancellationToken);
-            return CreatedAtAction(nameof(CreateVacature), new { id = result.VacatureId }, result);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Error creating vacature");
-            return BadRequest(ex.Message);
-        }
+        Log.Information("Creating new vacature: {FunctionTitle}", command.FunctionTitle);
+        var result = await _mediator.Send(command, cancellationToken);
+        return CreatedAtAction(nameof(CreateVacature), new { id = result.VacatureId }, result);
     }
 }

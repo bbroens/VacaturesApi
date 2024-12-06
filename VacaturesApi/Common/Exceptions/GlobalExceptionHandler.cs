@@ -1,56 +1,73 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Text.Json;
+﻿using FluentValidation;
+using Serilog;
+using VacaturesApi.Common.Exceptions;
 
-namespace VacaturesApi.Common.Exceptions;
-
-public class GlobalExceptionHandler
+public class GlobalExceptionHandler : IMiddleware
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<GlobalExceptionHandler> _logger;
-
-    public GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptionHandler> logger)
+    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        _next = next;
-        _logger = logger;
-    }
-
-    public async Task InvokeAsync(HttpContext context)
-    {
+        Log.Error("_______________USED GLOBAL HANDLER_________________");
         try
         {
-            await _next(context);
+            // Continue processing the request
+            await next(context);
+        }
+        catch (ValidationException ex)
+        {
+            Log.Error(ex, "Validation failed");
+
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.ContentType = "application/json";
+
+            var errors = ex.Errors.GroupBy(e => e.PropertyName)
+                .ToDictionary(
+                    group => group.Key, 
+                    group => group.Select(e => e.ErrorMessage).ToArray()
+                );
+            
+            var response = new 
+            {
+                Type = "Validation Error",
+                Title = "One or more validation errors occurred",
+                Status = StatusCodes.Status400BadRequest,
+                Errors = errors
+            };
+            
+            await context.Response.WriteAsJsonAsync(response);
+        }
+        catch (NotFoundException ex)
+        {
+            Log.Warning(ex, "Resource not found");
+
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+            context.Response.ContentType = "application/json";
+
+            var response = new 
+            {
+                Type = "Not Found",
+                Title = "Resource not found",
+                Status = StatusCodes.Status404NotFound,
+                Detail = ex.Message
+            };
+
+            await context.Response.WriteAsJsonAsync(response);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An unhandled exception occurred.");
-            await HandleExceptionAsync(context, ex);
+            Log.Error(ex, "An unhandled exception occurred");
+
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.ContentType = "application/json";
+
+            var response = new 
+            {
+                Type = "Server Error",
+                Title = "An unexpected error occurred",
+                Status = StatusCodes.Status500InternalServerError,
+                Detail = "An internal server error has occurred"
+            };
+
+            await context.Response.WriteAsJsonAsync(response);
         }
     }
-
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
-    {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = exception switch
-        {
-            NotFoundException => (int)HttpStatusCode.NotFound,
-            ValidationException => (int)HttpStatusCode.BadRequest,
-            _ => (int)HttpStatusCode.InternalServerError
-        };
-
-        return context.Response.WriteAsync(new ErrorResponse
-        {
-            StatusCode = context.Response.StatusCode,
-            Message = exception.Message
-        }.ToString());
-    }
-}
-
-public class ErrorResponse
-{
-    public int StatusCode { get; set; }
-    public string Message { get; set; } = string.Empty;
-
-    public override string ToString() => 
-        JsonSerializer.Serialize(this);
 }

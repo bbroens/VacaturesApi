@@ -36,7 +36,7 @@ public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, Vaca
             Industry = request.Industry,  
             ListPriority = request.ListPriority,
             Hidden = request.Hidden,
-            CreatedAt = request.CreatedAt, 
+            CreatedAt = DateTime.UtcNow, 
             UpdatedAt = request.UpdatedAt
         };
 

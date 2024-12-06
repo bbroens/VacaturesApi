@@ -4,7 +4,7 @@ using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Domain;
 
-namespace VacaturesApi.Features.Vacatures.Get;
+namespace VacaturesApi.Features.Vacatures.GetById;
 
 public class GetVacatureByIdHandler : IRequestHandler<GetVacatureByIdQuery, VacatureDto>
 {

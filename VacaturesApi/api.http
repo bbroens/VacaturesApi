@@ -8,12 +8,12 @@ GET {{HostAddress}}/api/thisdoesnotexist/
 ### Should return 200 with a list (if any)
 GET {{HostAddress}}/api/vacatures/
 
-### Features/Vacatures/Get: GET a single vacature by VacatureId
+### Features/Vacatures/GetById: GET a single vacature by VacatureId
 ### Should return 200 with a vacature (if VacatureId exists)
-GET {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
+GET {{HostAddress}}/api/vacatures/f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f
 
-### Features/Vacatures/Get: GET a non-existing vacature by VacatureId
-### Should return 404
+### Features/Vacatures/GetById: GET a non-existing vacature by VacatureId
+### Should return 404 with exception message
 GET {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af22a
 
 ### Features/Vacatures/Create: POST a new vacature
@@ -35,11 +35,13 @@ Content-Type: application/json
   "SalaryRange": "€75,000 - €90,000",
   "Industry": "Technology",
   "ListPriority": 1,
-  "Hidden": false
+  "Hidden": false,
+  "CreatedAt": "2024-12-01T12:00:00.722Z",
+  "updatedAt": "2024-12-01T12:00:00.722Z"
 }
 
 ### Features/Vacatures/Create: POST an incomplete vacature
-### Should return 400
+### Should return 400 with validation errors
 POST {{HostAddress}}/api/vacatures
 Content-Type: application/json
 
@@ -50,15 +52,19 @@ Content-Type: application/json
 
 ### Features/Vacatures/Delete: DELETE a single vacature by VacatureId
 ### Should return 204 (if VacatureId existed and was deleted)
-DELETE {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
+DELETE {{HostAddress}}/api/vacatures/405889c7-fcff-4cd3-b816-12507308a0f9
 
 ### Features/Vacatures/Delete: DELETE a non-existing vacature by VacatureId
 ### Should return 500 with exception message
 DELETE {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
 
+### Features/Vacatures/Delete: DELETE with missing VacatureId
+### Should return 405
+DELETE {{HostAddress}}/api/vacatures/
+
 ### Features/Vacatures/Update: PUT update a single vacature by VacatureId
 ### Should return 204 (if VacatureId exists and was updated)
-PUT {{HostAddress}}/api/vacatures/f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f
+PUT {{HostAddress}}/api/vacatures/2ff6c788-c3dc-4ad6-b91b-ac64176942c6
 Content-Type: application/json
 
 {
@@ -67,7 +73,7 @@ Content-Type: application/json
 }
 
 ### Features/Vacatures/Update: PUT update a non-existing vacature by VacatureId
-### Should return 404
+### Should return 404 with exception message
 PUT {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
 Content-Type: application/json
 

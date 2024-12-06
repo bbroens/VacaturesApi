@@ -1,9 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using VacaturesApi.Common.Exceptions;
 
-namespace VacaturesApi.Features.Vacatures.Get;
+namespace VacaturesApi.Features.Vacatures.GetById;
 
 [Route("api/vacatures")]
 public class GetVacatureByIdEndpoint : ControllerBase
@@ -22,17 +20,8 @@ public class GetVacatureByIdEndpoint : ControllerBase
         Guid VacatureId, 
         CancellationToken cancellationToken)
     {
-        try
-        {
-            Log.Information("Fetching vacature with ID: {Id}", VacatureId);
-            var query = new GetVacatureByIdQuery(VacatureId);
-            var result = await _mediator.Send(query, cancellationToken);
-            return Ok(result);
-        }
-        catch (NotFoundException)
-        {
-            Log.Warning("Vacature not found with ID: {Id}", VacatureId);
-            return NotFound();
-        }
+        var query = new GetVacatureByIdQuery(VacatureId);
+        var result = await _mediator.Send(query, cancellationToken);
+        return Ok(result);
     }
 }
