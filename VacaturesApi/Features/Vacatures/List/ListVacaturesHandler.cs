@@ -4,6 +4,11 @@ using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Vacatures.List;
 
+/// <summary>
+/// Handler for fetching a list of vacatures.
+/// Listens to query of type ListVacaturesQuery through MediatR. 
+/// </summary>
+
 public class ListVacaturesHandler : IRequestHandler<ListVacaturesQuery, List<VacatureDto>>
 {
     private readonly IVacatureRepository _repository;

@@ -3,7 +3,10 @@ using MediatR;
 
 namespace VacaturesApi.Common.Validation;
 
-// Validation behavior to be used with MediatR pipeline
+/// <summary>
+/// MediatR Pipeline Behavior to validate all incoming requests before they are handled.
+/// </summary>
+
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {

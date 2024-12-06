@@ -3,6 +3,7 @@ using System.Reflection;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Common.Validation;
@@ -49,13 +50,14 @@ try
     // Register Automapper
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
-    // Register MediatR
+    // Register MediatR and discover and register all request handlers in the assembly.
+    // Parameters of those handlers will be resolved by type using services from this DI container.
+    // This allows MediatR to instance handlers with their dependencies at runtime.
     builder.Services.AddMediatR(cfg => 
         cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
-    
     
     // Configure the HTTP request pipeline.
     // #####################################

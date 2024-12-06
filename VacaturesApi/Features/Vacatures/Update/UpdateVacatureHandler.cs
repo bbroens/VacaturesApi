@@ -8,6 +8,7 @@ namespace VacaturesApi.Features.Vacatures.Update;
 
 /// <summary>
 /// Handler for updating a vacature.
+/// Listens to command of type UpdateVacatureCommand through MediatR. 
 /// </summary>
 
 public class UpdateVacatureHandler : IRequestHandler<UpdateVacatureCommand, VacatureDto>
@@ -25,11 +26,11 @@ public class UpdateVacatureHandler : IRequestHandler<UpdateVacatureCommand, Vaca
     {
         // Get the existing EF entity by id
         var existingVacature = 
-            await _repository.GetByIdAsync(request.UpdateDto.VacatureId, cancellationToken)
-            ?? throw new NotFoundException(nameof(Vacature), request.UpdateDto.VacatureId);
+            await _repository.GetByIdAsync(request.UpdateVacatureDto.VacatureId, cancellationToken)
+            ?? throw new NotFoundException(nameof(Vacature), request.UpdateVacatureDto.VacatureId);
 
         // Map property values from DTO to the EF entity
-        var updatedVacature = _mapper.Map(request.UpdateDto, existingVacature);
+        var updatedVacature = _mapper.Map(request.UpdateVacatureDto, existingVacature);
 
         // Update the vacature EF entity
         await _repository.UpdateAsync(updatedVacature, cancellationToken);

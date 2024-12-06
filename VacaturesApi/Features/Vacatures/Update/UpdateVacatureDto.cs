@@ -1,10 +1,10 @@
 ﻿namespace VacaturesApi.Features.Vacatures.Update;
 
 /// <summary>
-/// DTO for updating a vacature based on an incoming request
+/// DTO structure to update a vacature inbound from an endpoint.
 /// </summary>
 
-public class UpdateVacatureDto
+public record UpdateVacatureDto
 {
     public Guid VacatureId { get; set; }
     public string? UrlSlug { get; set; }

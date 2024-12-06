@@ -1,9 +1,7 @@
 ﻿namespace VacaturesApi.Features.Vacatures;
 
 /// <summary>
-/// Data Transfer Object for a Vacature.
-/// By using a record type we can compare actual values instead of object references.
-/// This is more performant and avoids unnecessary allocations and equals checks.
+/// DTO structure to return a vacature outbound from an endpoint.
 /// </summary>
 
 public record VacatureDto(

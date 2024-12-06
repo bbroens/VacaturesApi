@@ -6,6 +6,8 @@ namespace VacaturesApi.Persistence.Configuration;
 
 /// <summary>
 /// Configuration of the database schema for the Vacature entity.
+/// This configuration is used to create the schema, NOT for endpoint validation.
+/// Endpoint validation is done with FluentValidation inside a feature.
 /// </summary>
 
 public class VacatureConfiguration : IEntityTypeConfiguration<Vacature>

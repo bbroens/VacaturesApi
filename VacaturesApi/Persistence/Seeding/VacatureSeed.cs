@@ -5,13 +5,15 @@ using VacaturesApi.Persistence.Data;
 namespace VacaturesApi.Persistence.Seeding;
 
 /// <summary>
-/// Provides seed data for initial database population.
+/// Provides seed method with data for initial database population.
+/// This method checks for empty Db at Program startup, but ONLY in Development environment.
 /// </summary>
+
 public static class DataSeeder
 {
     public static void Seed(VacatureDbContext context)
     {
-        
+        Log.Information("Checking if development database is empty...");
         if (context.Vacatures.Any()) return;
         
         Log.Information("No Vacatures in database. Seeding data...");

@@ -6,6 +6,11 @@ using VacaturesApi.Domain;
 
 namespace VacaturesApi.Features.Vacatures.GetById;
 
+/// <summary>
+/// Handler for fetching a vacature by its id.
+/// Listens to query of type GetVacatureByIdQuery through MediatR. 
+/// </summary>
+
 public class GetVacatureByIdHandler : IRequestHandler<GetVacatureByIdQuery, VacatureDto>
 {
     private readonly IVacatureRepository _repository;

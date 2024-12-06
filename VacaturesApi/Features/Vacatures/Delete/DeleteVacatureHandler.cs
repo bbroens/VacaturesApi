@@ -4,7 +4,8 @@ using VacaturesApi.Common.Interfaces;
 namespace VacaturesApi.Features.Vacatures.Delete;
 
 /// <summary>
-/// Handler for deleting a vacature
+/// Handler for deleting a vacature.
+/// Listens to command of type DeleteVacatureCommand through MediatR. 
 /// </summary>
 
 public class DeleteVacatureHandler : IRequestHandler<DeleteVacatureCommand>

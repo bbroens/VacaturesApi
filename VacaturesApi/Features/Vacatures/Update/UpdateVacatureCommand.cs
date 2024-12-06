@@ -3,10 +3,9 @@
 namespace VacaturesApi.Features.Vacatures.Update;
 
 /// <summary>
-/// Command to update a vacature.
-/// This command has its own UpdateDto to shape its request and response data.
-/// The UpdateDto is mapped to the Vacature entity on Feature level.
+/// Command record describing a request to update a vacature by id.
+/// Tells Mediatr to pass the UpdateVacatureDto from the request into the handler listening for it.
+/// Tells Mediatr that this request must return a VacatureDto.
 /// </summary>
 
-public record UpdateVacatureCommand(UpdateVacatureDto UpdateDto) 
-    : IRequest<VacatureDto>;
+public record UpdateVacatureCommand(UpdateVacatureDto UpdateVacatureDto) : IRequest<VacatureDto>;

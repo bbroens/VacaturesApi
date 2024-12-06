@@ -2,14 +2,12 @@
 
 /// <summary>
 /// Model class representing a single Vacature.
-/// This class is used by Entity Framework to create and manipulate this table in the DB.
 /// Field requirement config is set at the persistence level to keep the model pure.
 /// </summary>
 
 public class Vacature
 {
     public Guid VacatureId { get; set; }
-    
     public string UrlSlug { get; set; } = string.Empty;
     public string FunctionTitle { get; set; } = string.Empty;
     public string Availability { get; set; } = string.Empty;

@@ -1,8 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MediatR;
-using VacaturesApi.Features.Vacatures;
 
 namespace VacaturesApi.Features.Vacatures.Create;
+
+/// <summary>
+/// Command record describing a request to create a vacature.
+/// Tells Mediatr to pass the below fields from the request into the handler listening for it.
+/// Tells Mediatr that this request must return a VacatureDto.
+/// </summary>
 
 public record CreateVacatureCommand(
     Guid VacatureId,
@@ -22,4 +27,5 @@ public record CreateVacatureCommand(
     [Required] bool Hidden,
     [Required] DateTime CreatedAt, 
     DateTime UpdatedAt
-) : IRequest<VacatureDto>;
+) 
+    : IRequest<VacatureDto>;

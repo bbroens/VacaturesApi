@@ -5,6 +5,11 @@ using VacaturesApi.Domain;
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
+/// <summary>
+/// Handler for adding a vacature.
+/// Listens to command of type CreateVacatureCommand through MediatR. 
+/// </summary>
+
 public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, VacatureDto>
 {
     private readonly IVacatureRepository _repository;
@@ -18,7 +23,6 @@ public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, Vaca
 
     public async Task<VacatureDto> Handle(CreateVacatureCommand request, CancellationToken cancellationToken)
     {
-        // 
         var vacature = new Vacature 
         {
             VacatureId = Guid.NewGuid(),

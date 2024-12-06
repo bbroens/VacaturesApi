@@ -1,6 +1,14 @@
 ﻿using FluentValidation;
 using Serilog;
-using VacaturesApi.Common.Exceptions;
+
+namespace VacaturesApi.Common.Exceptions;
+
+/// <summary>
+/// Global Exception Handler used as Program middleware.
+/// Handles exceptions thrown in the app and returns them as JSON responses.
+/// This way we have a central, extensible mechanism for exception logging and error responses.
+/// Uses FluentValidation for validation errors.
+/// </summary>
 
 public class GlobalExceptionHandler : IMiddleware
 {

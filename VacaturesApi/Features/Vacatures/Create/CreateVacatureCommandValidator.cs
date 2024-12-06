@@ -2,6 +2,10 @@
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
+/// <summary>
+/// Validator for the CreateVacatureCommand
+/// </summary>
+
 public class CreateVacatureCommandValidator : AbstractValidator<CreateVacatureCommand>
 {
     public CreateVacatureCommandValidator()

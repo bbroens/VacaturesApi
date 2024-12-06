@@ -4,6 +4,10 @@ using Serilog;
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
+/// <summary>
+/// Endpoint for creating a new vacature.
+/// </summary>
+
 [Route("api/vacatures")]
 public class CreateVacatureEndpoint : ControllerBase
 {

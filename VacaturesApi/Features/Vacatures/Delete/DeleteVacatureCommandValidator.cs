@@ -6,9 +6,9 @@ namespace VacaturesApi.Features.Vacatures.Delete;
 /// Validator for the DeleteVacatureCommand
 /// </summary>
 
-public class DeleteVacatureValidator : AbstractValidator<DeleteVacatureCommand>
+public class DeleteVacatureCommandValidator : AbstractValidator<DeleteVacatureCommand>
 {
-    public DeleteVacatureValidator()
+    public DeleteVacatureCommandValidator()
     {
         RuleFor(x => x.VacatureId)
             .NotEmpty().WithMessage("VacatureId is required");
