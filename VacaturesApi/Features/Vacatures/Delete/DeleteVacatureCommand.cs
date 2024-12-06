@@ -1,6 +1,5 @@
-﻿namespace VacaturesApi.Features.Vacatures.Delete;
+﻿using MediatR;
 
-public class DeleteVacatureCommand
-{
-    
-}
+namespace VacaturesApi.Features.Vacatures.Delete;
+
+public record DeleteVacatureCommand(Guid VacatureId) : IRequest;

@@ -1,6 +1,5 @@
-﻿namespace VacaturesApi.Features.Vacatures.List;
+﻿using MediatR;
 
-public class ListVacaturesQuery
-{
-    
-}
+namespace VacaturesApi.Features.Vacatures.List;
+
+public record ListVacaturesQuery : IRequest<List<VacatureDto>>;

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using VacaturesApi.Common.Exceptions;
 
 namespace VacaturesApi.Features.Vacatures.Get;
@@ -8,12 +9,10 @@ namespace VacaturesApi.Features.Vacatures.Get;
 public class GetVacatureByIdEndpoint : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly ILogger<GetVacatureByIdEndpoint> _logger;
 
     public GetVacatureByIdEndpoint(IMediator mediator, ILogger<GetVacatureByIdEndpoint> logger)
     {
         _mediator = mediator;
-        _logger = logger;
     }
 
     [HttpGet("{VacatureId:guid}")]
@@ -25,14 +24,14 @@ public class GetVacatureByIdEndpoint : ControllerBase
     {
         try
         {
-            _logger.LogInformation("Fetching vacature with ID: {Id}", VacatureId);
+            Log.Information("Fetching vacature with ID: {Id}", VacatureId);
             var query = new GetVacatureByIdQuery(VacatureId);
             var result = await _mediator.Send(query, cancellationToken);
             return Ok(result);
         }
         catch (NotFoundException)
         {
-            _logger.LogWarning("Vacature not found with ID: {Id}", VacatureId);
+            Log.Warning("Vacature not found with ID: {Id}", VacatureId);
             return NotFound();
         }
     }
