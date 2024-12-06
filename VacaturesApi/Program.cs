@@ -38,6 +38,9 @@ try
     
     // Add services for controllers
     builder.Services.AddControllers();
+    
+    // Add Swagger generator
+    builder.Services.AddSwaggerGen();
 
     // Configure DbContext
     builder.Services.AddDbContext<VacatureDbContext>(options =>
@@ -81,6 +84,10 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+    
+    app.UseSwagger();
+    
+    app.UseSwaggerUI();
 
     app.Run();
 
