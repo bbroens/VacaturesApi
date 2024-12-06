@@ -1,0 +1,83 @@
+@HostAddress = https://localhost:5001
+
+### GET a non-existing route
+### Should return 404
+GET {{HostAddress}}/api/thisdoesnotexist/
+
+### Features/Vacatures/List: GET a list of all vacatures
+### Should return 200 with a list (if any)
+GET {{HostAddress}}/api/vacatures/
+
+### Features/Vacatures/GetById: GET a single vacature by VacatureId
+### Should return 200 with a vacature (if VacatureId exists)
+GET {{HostAddress}}/api/vacatures/f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f
+
+### Features/Vacatures/GetById: GET a non-existing vacature by VacatureId
+### Should return 404 with exception message
+GET {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af22a
+
+### Features/Vacatures/Create: POST a new vacature
+### Should return 201 with the created vacature
+POST {{HostAddress}}/api/vacatures
+Content-Type: application/json
+
+{
+  "UrlSlug": "junior-software-engineer-net",
+  "FunctionTitle": "Senior Software Engineer (.NET)",
+  "Availability": "Full-time",
+  "Location": "Utrecht, Netherlands",
+  "ContactPerson": "Janne Siemens",
+  "Description": "We are looking for an experienced .NET developer to join our team.",
+  "WhatToExpect": "Challenging projects, modern tech stack, great team culture",
+  "Responsibilities": "Develop and maintain .NET applications, mentor junior developers",
+  "Offer": "Competitive salary, professional growth, flexible working hours",
+  "Requirements": "5+ years of .NET development, strong C# skills, microservices experience",
+  "SalaryRange": "€75,000 - €90,000",
+  "Industry": "Technology",
+  "ListPriority": 1,
+  "Hidden": false,
+  "CreatedAt": "2024-12-01T12:00:00.722Z",
+  "updatedAt": "2024-12-01T12:00:00.722Z"
+}
+
+### Features/Vacatures/Create: POST an incomplete vacature
+### Should return 400 with validation errors
+POST {{HostAddress}}/api/vacatures
+Content-Type: application/json
+
+{
+  "VacatureId": "e349a619-c06c-4ae4-85e0-b7064d6af44e",
+  "UrlSlug": "this-should-not-get-added"
+}
+
+### Features/Vacatures/Delete: DELETE a single vacature by VacatureId
+### Should return 204 (if VacatureId existed and was deleted)
+DELETE {{HostAddress}}/api/vacatures/606a4e8d-ea68-4dc7-ae1b-0b894d2c3fe4
+
+### Features/Vacatures/Delete: DELETE a non-existing vacature by VacatureId
+### Should return 404 with exception message
+DELETE {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
+
+### Features/Vacatures/Delete: DELETE with missing VacatureId
+### Should return 405
+DELETE {{HostAddress}}/api/vacatures/
+
+### Features/Vacatures/Update: PUT update a single vacature by VacatureId
+### Should return 200 (if VacatureId exists and was updated)
+PUT {{HostAddress}}/api/vacatures/2ff6c788-c3dc-4ad6-b91b-ac64176942c6
+Content-Type: application/json
+
+{
+  "VacatureId": "f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f",
+  "UrlSlug": "url-slug-was-updated-by-id"
+}
+
+### Features/Vacatures/Update: PUT update a non-existing vacature by VacatureId
+### Should return 404 with exception message
+PUT {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
+Content-Type: application/json
+
+{
+  "VacatureId": "e349a619-c06c-4ae4-85e0-b7064d6af42a",
+  "UrlSlug": "url-slug-should-not-be-updated-because-id-does-not-exist"
+}
