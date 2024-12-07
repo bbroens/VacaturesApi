@@ -43,6 +43,9 @@ try
     // Register our (/ServiceExtensions) Rate Limiter
     builder.Services.ConfigureRateLimiter();
     
+    // Register our (ServiceExtensions) response caching
+    builder.Services.ConfigureResponseCaching();
+    
     // Add services for controllers
     builder.Services.AddControllers();
     
@@ -82,9 +85,14 @@ try
     if (app.Environment.IsProduction())
         app.UseHsts();
     
+    // Write streamlined request completion events, instead of the built-in ones.
+    app.UseSerilogRequestLogging();
+    
     app.UseHttpsRedirection();
     
     app.UseCors("CorsPolicy");
+    
+    app.UseRouting();
     
     app.UseAuthorization();
 
@@ -94,6 +102,8 @@ try
     
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    app.UseResponseCaching();
 
     app.Run();
 
