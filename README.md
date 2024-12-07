@@ -29,7 +29,7 @@ This flavor of the VSA pattern has  features in self-contained folders, with eac
 
 The solution implements a basic **CQRS** pattern using MediatR, where a feature can send a command (mutating data) or a query (just fetching data). Separating the two makes the solution ready for more advanced techniques such as separate read/write databases.
 
-DTO's are validated using **FluentValidation** and endpoint results are rate limited and **paginated** and use **ResponseCache** where multiple can be fetched.
+DTO's are validated using **FluentValidation** and endpoint results are rate limited and **paginated** and use **response cache** where multiple can be fetched.
 
 If needed, you could move the domain, data and infrastructure into separate layers/projects. The solution can be shaped into Onion/clean architecture, but for the solution as-is that might be unnecessary.
 
@@ -73,5 +73,8 @@ Output from the application is written to the console.
 
 ## Extending the application
 
-This API is a good starting point for working with CQRS and VSA using modern best practises. 
-I tried to keep it simple and easy to adapt, so you can focus on adding the features you need such as caching or protected routes using Identity or any other authentication mechanism.
+This API is a good starting point for working with CQRS and vertical slice architecture using modern best practises. 
+I tried to keep it simple and easy to adapt, so you can focus on adding the features you need. 
+
+To keep the application easy to run and test, I have not included any authentication blocks.
+If you need authentication, you can add easily protected routes using Identity and JWT for example.
