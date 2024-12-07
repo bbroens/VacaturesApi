@@ -62,12 +62,12 @@ public class VacatureRepository : IVacatureRepository
 
     public async Task UpdateAsync(Vacature vacature, CancellationToken cancellationToken)
     {
-        // First, verify the vacature exists
+        // First, verify the vacature exists or throw a NotFoundException
         var existingVacature = await GetByIdAsync(vacature.VacatureId, cancellationToken);
 
         try
         {
-            existingVacature.UpdatedAt = DateTime.UtcNow;
+            existingVacature!.UpdatedAt = DateTime.UtcNow;
             _context.Vacatures.Update(existingVacature);
             await _context.SaveChangesAsync(cancellationToken);
         }
@@ -84,7 +84,7 @@ public class VacatureRepository : IVacatureRepository
 
         try
         {
-            _context.Vacatures.Remove(vacature);
+            _context.Vacatures.Remove(vacature!);
             await _context.SaveChangesAsync(cancellationToken);
         }
         catch (DbUpdateException ex)

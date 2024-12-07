@@ -2,17 +2,16 @@ using Serilog;
 using MediatR;
 using FluentValidation;
 using System.Reflection;
-using System.Threading.RateLimiting;
-using Microsoft.EntityFrameworkCore;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Common.Validation;
 using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
+using VacaturesApi.ServiceExtensions;
 
 // The initial bootstrap logger is able to log errors during start-up.
-// On successful startup it is replaced by the logger configured in AddSerilog().
+// On successful startup it is replaced by the logger configured by ConfigureSerilog().
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -25,27 +24,30 @@ try
     // ######################################
     
     var builder = WebApplication.CreateBuilder(args);
+    
+    // Register our custom global IExceptionHandler
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-    // Register and config serilog
-    builder.Services.AddSerilog((services, config) => config
-        .ReadFrom.Configuration(builder.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext()
-        .WriteTo.Console()
-        .WriteTo.File("Logs/logs-vacaturesapi-.txt", rollingInterval: RollingInterval.Day));    
+    // Register our (/ServiceExtensions) Serilog Config
+    builder.Services.ConfigureSerilog(builder.Configuration);
 
-    // Register global exception handler
-    builder.Services.AddScoped<GlobalExceptionHandler>();
+    // Register our (/ServiceExtensions) CORS Config
+    builder.Services.ConfigureCors();
+
+    // Register our (/ServiceExtensions) IIS Integration
+    builder.Services.ConfigureIISIntegration();
+    
+    // Register our (/ServiceExtensions) DbContext used by the repositories
+    builder.Services.ConfigureDbContext(builder.Configuration);
+    
+    // Register our (/ServiceExtensions) Rate Limiter
+    builder.Services.ConfigureRateLimiter();
     
     // Add services for controllers
     builder.Services.AddControllers();
     
     // Add Swagger generator
     builder.Services.AddSwaggerGen();
-
-    // Configure DbContext
-    builder.Services.AddDbContext<VacatureDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("VacatureDbConnection")));
 
     // Add FluentValidation
     builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
@@ -56,31 +58,8 @@ try
     
     // Register MediatR and discover and register all request handlers in the assembly.
     // Parameters of those handlers will be resolved by type using services from this DI container.
-    // This allows MediatR to instance handlers with their dependencies at runtime.
     builder.Services.AddMediatR(cfg => 
         cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-    
-    // Add and configure global rate limiter for the API.
-    // This will limit an IP address to making 100 requests per minute.
-    builder.Services.AddRateLimiter(options =>
-    {
-        options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
-            RateLimitPartition.GetFixedWindowLimiter(
-                partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
-                factory: partition => new FixedWindowRateLimiterOptions
-                {
-                    AutoReplenishment = true,
-                    PermitLimit = 100,
-                    QueueLimit = 0,
-                    Window = TimeSpan.FromMinutes(1)
-                }));
-
-        options.OnRejected = async (context, token) =>
-        {
-            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
-            await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
-        };
-    });
 
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
@@ -98,20 +77,22 @@ try
         DataSeeder.Seed(dbContext);
     }
     
-    // Add global exception handling middleware
-    app.UseMiddleware<GlobalExceptionHandler>();
+    app.UseExceptionHandler(b => { });
     
     if (app.Environment.IsProduction())
         app.UseHsts();
     
+    app.UseHttpsRedirection();
+    
+    app.UseCors("CorsPolicy");
+    
     app.UseAuthorization();
 
-    app.MapControllers();
-    
     app.UseRateLimiter();
     
-    app.UseSwagger();
+    app.MapControllers();
     
+    app.UseSwagger();
     app.UseSwaggerUI();
 
     app.Run();
