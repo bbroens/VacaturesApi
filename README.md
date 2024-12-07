@@ -9,7 +9,7 @@ The API offers simple **CRUD** operations on the vacatures, so that vacatures ca
 
 The API works with an **external SQL database**, which can be changed in the appsettings.json file.
 
-This application builds into a **Docker container**, which can be deployed wherever you'd like.
+This application builds locally or into a **Docker container**, which can be deployed wherever you'd like.
 
 
 ## Vertical Slice Architecture
@@ -29,7 +29,7 @@ This flavor of the VSA pattern has  features in self-contained folders, with eac
 
 The solution implements a basic **CQRS** pattern using MediatR, where a feature can send a command (mutating data) or a query (just fetching data). Separating the two makes the solution ready for more advanced techniques such as separate read/write databases.
 
-DTO's are validated using **FluentValidation** and endpoint results are rate limited and **paginated** where multiple can be fetched.
+DTO's are validated using **FluentValidation** and endpoint results are rate limited and **paginated** and use **ResponseCache** where multiple can be fetched.
 
 If needed, you could move the domain, data and infrastructure into separate layers/projects. The solution can be shaped into Onion/clean architecture, but for the solution as-is that might be unnecessary.
 
@@ -45,7 +45,8 @@ For an additional read on Vertical Slice Architecture, [check this post](https:/
 * [Automapper](https://automapper.org/) for mapping simple DTOs and entities,
 * [FluentValidation](https://fluentvalidation.net/) for validation,
 * Custom GlobalExceptionHandler middleware catching and logging exceptions,
-* Global rate limiter middleware limiting requests to 100 per minute.
+* Global rate limiter middleware limiting requests on expensive endpoints.
+* Global response caching middleware caching responses on expensive endpoints.
 
 ## Getting Started
 

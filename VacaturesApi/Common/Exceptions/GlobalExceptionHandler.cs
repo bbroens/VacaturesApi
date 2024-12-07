@@ -21,7 +21,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         // Check if cancellation has been requested
         cancellationToken.ThrowIfCancellationRequested();
 
-        // Determine the type of exception and handle accordingly
+        // Determine exception type
         switch (exception)
         {
             case ValidationException validationEx:

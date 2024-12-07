@@ -49,11 +49,12 @@ public static class ServiceExtensions
             options.UseSqlServer(configuration.GetConnectionString("VacatureDbConnection")));
     }
     
-    // Configure global rate limiter for the API.
+    // Configure global rate limiter for the API
     public static void ConfigureRateLimiter(this IServiceCollection services)
     {
         services.AddRateLimiter(options =>
         {
+            // Limit requests per minute for all endpoints
             options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
                 RateLimitPartition.GetFixedWindowLimiter(
                     partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown",
@@ -64,6 +65,18 @@ public static class ServiceExtensions
                         QueueLimit = 0,
                         Window = TimeSpan.FromMinutes(1)
                     }));
+            
+            // Limit requests per minute specifically for expensive endpoints
+            options.AddPolicy("ExpensiveEndpointsPolicy", context =>
+                RateLimitPartition.GetFixedWindowLimiter("ExpensiveEndpointsLimiter",
+                    partition => new FixedWindowRateLimiterOptions
+                    {
+                        AutoReplenishment = true,
+                        PermitLimit = 50,
+                        Window = TimeSpan.FromMinutes(1)
+                    }));
+        
+            options.RejectionStatusCode = 429;
 
             options.OnRejected = async (context, token) =>
             {
@@ -72,5 +85,10 @@ public static class ServiceExtensions
             };
         });
     }
-
+    
+    // Configure response caching
+    public static void ConfigureResponseCaching(this IServiceCollection services)
+    {
+        services.AddResponseCaching();
+    }
 }

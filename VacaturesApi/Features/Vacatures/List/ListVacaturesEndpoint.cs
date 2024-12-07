@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using VacaturesApi.Common.Pagination;
 
 namespace VacaturesApi.Features.Vacatures.List;
 
 /// <summary>
-/// Endpoint for retrieving a paginated list of all vacatures ordered by creation date.
+/// Endpoint for retrieving a paginated & cached list of all vacatures ordered by creation date.
 /// </summary>
 
 [Route("api/vacatures")]
@@ -19,6 +20,8 @@ public class ListVacaturesEndpoint : ControllerBase
     }
     
     [HttpGet]
+    [ResponseCache(Duration = 30)] // cache response for 30 seconds
+    [EnableRateLimiting("ExpensiveEndpointsPolicy")] // apply special rate limiting
     [ProducesResponseType(typeof(PaginatedResult<VacatureDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginatedResult<VacatureDto>>> ListVacatures(
         CancellationToken cancellationToken,
