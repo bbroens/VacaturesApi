@@ -3,6 +3,11 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace VacaturesApi.Persistence.Data;
 
+/// <summary>
+/// Factory class for creating instances of VacatureDbContext at design time.
+/// This can provide a direct DbContext instance when running EF migrations.
+/// </summary>
+
 public class DbContextFactory : IDesignTimeDbContextFactory<VacatureDbContext>
 {
     public VacatureDbContext CreateDbContext(string[] args)

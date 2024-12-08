@@ -3,20 +3,24 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using VacaturesApi.Features.Authentication.Login;
+using VacaturesApi.Features.Authentication.Register;
 
-namespace VacaturesApi.Common.Authentication;
+namespace VacaturesApi.Features.Authentication;
 
 /// <summary>
-/// Service handling API authentication operations,
+/// This repository exposes methods with API authentication operations.
+/// Error handling is done globally with the exception handling middleware.
+/// Validation is done with FluentValidation on the command/query per action.
 /// </summary>
 
-public class AuthService
+public class AuthRepository
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
 
-    public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+    public AuthRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -53,10 +57,10 @@ public class AuthService
         return await GenerateJwtToken(user);
     }
 
-    public async Task<AuthResponseDto> Login(LoginDto model)
+    public async Task<AuthResponseDto> Login(LoginDto login)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
+        var user = await _userManager.FindByEmailAsync(login.Email);
+        if (user == null || !await _userManager.CheckPasswordAsync(user, login.Password))
         {
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
