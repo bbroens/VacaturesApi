@@ -15,7 +15,7 @@ Authorization: Bearer {{JwtToken}}
   "roles": ["Contributor"]
 }
 
-### Login a user for authentication
+### Login as existing user for authentication
 ### Should return 200 with a token
 ### Use the token in the Authorization header
 ### Authorization: Bearer <your_received_token>

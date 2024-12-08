@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VacaturesApi.Common.Authentication;
+namespace VacaturesApi.Features.Authentication.Register;
 
 /// <summary>
-/// DTO structure to submit an API registration request.
+/// DTO structure describing an API user registration request.
 /// </summary>
 
 public record RegisterDto

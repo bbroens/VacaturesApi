@@ -37,7 +37,7 @@ Requests are validated using **FluentValidation** and endpoint results are rate 
 use **response cache** where multiple can be fetched.
 
 The management endpoints are protected by role-based **Identity auth** using **JWT tokens**. To register API users and login,
-separate endpoints and a service is provided.
+separate endpoints are provided.
 
 If you prefer, you could move the domain, data and infrastructure into separate layers/projects. The solution can be 
 shaped into Onion/clean architecture. For an additional read on Vertical Slice Architecture, [check this post](https://www.jimmybogard.com/vertical-slice-architecture/) or [this article with another example](https://code-maze.com/vertical-slice-architecture-aspnet-core/).

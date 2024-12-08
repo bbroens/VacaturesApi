@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace VacaturesApi.Common.Authentication;
+namespace VacaturesApi.Features.Authentication.Login;
 
 /// <summary>
-/// DTO structure for an API login request.
+/// DTO structure describing an API user login request.
 /// </summary>
 
 public record LoginDto

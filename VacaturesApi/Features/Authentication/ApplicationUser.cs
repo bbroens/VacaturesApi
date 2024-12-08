@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace VacaturesApi.Common.Authentication;
+namespace VacaturesApi.Features.Authentication;
 
 /// <summary>
 /// Base class for API users using Identity Framework

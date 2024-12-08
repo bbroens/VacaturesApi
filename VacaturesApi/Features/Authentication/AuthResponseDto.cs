@@ -1,4 +1,4 @@
-﻿namespace VacaturesApi.Common.Authentication;
+﻿namespace VacaturesApi.Features.Authentication;
 
 /// <summary>
 /// DTO structure to return an API authentication response.

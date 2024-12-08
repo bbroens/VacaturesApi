@@ -2,11 +2,11 @@ using Serilog;
 using MediatR;
 using FluentValidation;
 using System.Reflection;
-using VacaturesApi.Common.Authentication;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Common.Validation;
+using VacaturesApi.Features.Authentication;
 using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
 using VacaturesApi.ServiceExtensions;
@@ -74,8 +74,8 @@ try
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
     
-    // Register AuthService
-    builder.Services.AddScoped<AuthService>();
+    // Register AuthRepository
+    builder.Services.AddScoped<AuthRepository>();
     
     // Configure the HTTP request pipeline.
     // #####################################
