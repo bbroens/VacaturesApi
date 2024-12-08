@@ -10,7 +10,7 @@ The API offers simple, protected **CRUD** operations on the vacatures, so that v
 updated or deleted. A front-end client using these end points is not included in the solution, 
 but the end points work and can be addressed with **Postman** or any HTTP request runner.
 
-The API works with an **external SQL database**, which can be changed in the appsettings.json file.
+The API works with an **external SQL database**, which can be configured in the `appsettings.json` file.
 This application builds locally or into a **Docker container**, which can be deployed wherever you'd like.
 
 
@@ -62,7 +62,7 @@ shaped into Onion/clean architecture. For an additional read on Vertical Slice A
 
 ### Setting up the database
 
-The database is configured in the appsettings.json file. For development I used a local SQL Server Express.
+The database is configured in the `appsettings.json` file. For development I used a local SQL Server Express.
 
 Once you configured the connection string, you should create the database by running the initial migration:
 
@@ -93,7 +93,7 @@ Content-Type: application/json
 }
 ```
 
-The user is now created in the Identity Db. You can now login with the same credentials and obtain a JWT token.
+The user is now created in the Identity Db. You can now log in with the same credentials and obtain a JWT token.
 **This returned JWT token can then be used to make authorized requests to the API.**
 
 ```
@@ -119,5 +119,5 @@ Output from the application is written to the console.
 
 ## Extending the application
 
-This API is a good starting point for working with CQRS and vertical slice architecture using modern best practises. 
+This API is a good starting point for working with CQRS and vertical slice architecture using modern best practices. 
 I tried to keep it simple and easy to adapt, so you can focus on adding the features you need.
