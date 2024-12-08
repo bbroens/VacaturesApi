@@ -1,25 +1,58 @@
 @HostAddress = https://localhost:5001
+@JwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImI0NzI0MDFmLTUwOGUtNDk4NC05MWExLTZkMjllOTBhMzU0MCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3R1c2VyQHZhY2F0dXJlcy5hcGkiLCJqdGkiOiJiYTQzYWYzOC1lNmM2LTRlZWEtOTIzZi0zOWY2MjQ4MjJlODYiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDb250cmlidXRvciIsImV4cCI6MTczMzc1NzA2OSwiaXNzIjoiVmFjYXR1cmVzQXBpIiwiYXVkIjoiVmFjYXR1cmVzQXBpQXVkaWVuY2UifQ.SjDglfGDrqgvNeCmJuv-USSaE5CFhy6UIMdQ2i3Gdkw
+
+### Add a user for authentication
+### Should return 200
+POST {{HostAddress}}/api/auth/register
+Content-Type: application/json
+Authorization: Bearer {{JwtToken}}
+
+{
+  "email": "testuser@vacatures.api",
+  "password": "Password123!",
+  "firstName": "Test",
+  "lastName": "User",
+  "roles": ["Contributor"]
+}
+
+### Login a user for authentication
+### Should return 200 with a token
+### Use the token in the Authorization header
+### Authorization: Bearer <your_received_token>
+POST {{HostAddress}}/api/auth/login
+Content-Type: application/json
+Authorization: Bearer {{JwtToken}}
+
+{
+  "email": "testuser@vacatures.api",
+  "password": "Password123!"
+}
 
 ### GET a non-existing route
 ### Should return 404
 GET {{HostAddress}}/api/thisdoesnotexist/
+Authorization: Bearer {{JwtToken}}
 
-### Features/Vacatures/List: GET a list of all vacatures
+### Features/Vacatures/List: GET a paged list of vacatures
 ### Should return 200 with a list (if any)
 GET {{HostAddress}}/api/vacatures/
+Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/GetById: GET a single vacature by VacatureId
 ### Should return 200 with a vacature (if VacatureId exists)
 GET {{HostAddress}}/api/vacatures/f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f
+Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/GetById: GET a non-existing vacature by VacatureId
 ### Should return 404 with exception message
 GET {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af22a
+Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/Create: POST a new vacature
 ### Should return 201 with the created vacature
 POST {{HostAddress}}/api/vacatures
 Content-Type: application/json
+Authorization: Bearer {{JwtToken}}
 
 {
   "UrlSlug": "junior-software-engineer-net",
@@ -44,6 +77,7 @@ Content-Type: application/json
 ### Should return 400 with validation errors
 POST {{HostAddress}}/api/vacatures
 Content-Type: application/json
+Authorization: Bearer {{JwtToken}}
 
 {
   "VacatureId": "e349a619-c06c-4ae4-85e0-b7064d6af44e",
@@ -52,20 +86,24 @@ Content-Type: application/json
 
 ### Features/Vacatures/Delete: DELETE a single vacature by VacatureId
 ### Should return 204 (if VacatureId existed and was deleted)
-DELETE {{HostAddress}}/api/vacatures/606a4e8d-ea68-4dc7-ae1b-0b894d2c3fe4
+DELETE {{HostAddress}}/api/vacatures/a8d6c07b-0a86-4236-aa3d-d86657557197
+Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/Delete: DELETE a non-existing vacature by VacatureId
 ### Should return 404 with exception message
 DELETE {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
+Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/Delete: DELETE with missing VacatureId
 ### Should return 405
 DELETE {{HostAddress}}/api/vacatures/
+Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/Update: PUT update a single vacature by VacatureId
 ### Should return 200 (if VacatureId exists and was updated)
-PUT {{HostAddress}}/api/vacatures/2ff6c788-c3dc-4ad6-b91b-ac64176942c6
+PUT {{HostAddress}}/api/vacatures/f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f
 Content-Type: application/json
+Authorization: Bearer {{JwtToken}}
 
 {
   "VacatureId": "f9d6c2cc-8ac1-4aff-b9b9-d45bcc06368f",
@@ -76,6 +114,7 @@ Content-Type: application/json
 ### Should return 404 with exception message
 PUT {{HostAddress}}/api/vacatures/e349a619-c06c-4ae4-85e0-b7064d6af44d
 Content-Type: application/json
+Authorization: Bearer {{JwtToken}}
 
 {
   "VacatureId": "e349a619-c06c-4ae4-85e0-b7064d6af42a",

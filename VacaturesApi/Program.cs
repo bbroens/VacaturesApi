@@ -2,6 +2,7 @@ using Serilog;
 using MediatR;
 using FluentValidation;
 using System.Reflection;
+using VacaturesApi.Common.Authentication;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
@@ -46,6 +47,12 @@ try
     // Register our (ServiceExtensions) response caching
     builder.Services.ConfigureResponseCaching();
     
+    // Register our (ServiceExtensions) Identity configuration
+    builder.Services.ConfigureIdentity();
+
+    // Register our (ServiceExtensions) JWT authentication configuration
+    builder.Services.ConfigureJwtAuthentication(builder.Configuration);
+    
     // Add services for controllers
     builder.Services.AddControllers();
     
@@ -66,6 +73,9 @@ try
 
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
+    
+    // Register AuthService
+    builder.Services.AddScoped<AuthService>();
     
     // Configure the HTTP request pipeline.
     // #####################################
@@ -93,6 +103,8 @@ try
     app.UseCors("CorsPolicy");
     
     app.UseRouting();
+
+    app.UseAuthentication();
     
     app.UseAuthorization();
 

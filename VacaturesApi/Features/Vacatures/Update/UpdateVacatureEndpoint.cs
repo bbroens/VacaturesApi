@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -19,8 +20,10 @@ public class UpdateVacatureEndpoint : ControllerBase
     }
     
     [HttpPut("{vacatureId:guid}")]
+    [Authorize(Roles = "Contributor")]
     [ProducesResponseType(typeof(VacatureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<VacatureDto>> UpdateVacature(
         Guid vacatureId, 
         [FromBody] UpdateVacatureDto updateDto, 
