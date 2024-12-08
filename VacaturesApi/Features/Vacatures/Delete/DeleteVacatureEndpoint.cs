@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -19,8 +20,10 @@ public class DeleteVacatureEndpoint : ControllerBase
     }
     
     [HttpDelete("{vacatureId:guid}")]
+    [Authorize(Roles = "Contributor")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> DeleteVacature(
         Guid vacatureId, 
         CancellationToken cancellationToken)

@@ -1,6 +1,11 @@
-﻿using Serilog;
+﻿using System.Text;
+using Serilog;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using VacaturesApi.Common.Authentication;
 using VacaturesApi.Persistence.Data;
 
 namespace VacaturesApi.ServiceExtensions;
@@ -15,9 +20,9 @@ public static class ServiceExtensions
     // Serilog configuration
     public static void ConfigureSerilog(this IServiceCollection services, IConfiguration config)
     {
-        services.AddSerilog((services, options) => options
+        services.AddSerilog((serviceprovider, options) => options
             .ReadFrom.Configuration(config)
-            .ReadFrom.Services(services)
+            .ReadFrom.Services(serviceprovider)
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .WriteTo.File("Logs/logs-vacaturesapi-.txt", rollingInterval: RollingInterval.Day));
@@ -90,5 +95,58 @@ public static class ServiceExtensions
     public static void ConfigureResponseCaching(this IServiceCollection services)
     {
         services.AddResponseCaching();
+    }
+    
+    // Configure Identity Framework for role-based auth
+    public static void ConfigureIdentity(this IServiceCollection services)
+    {
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequiredLength = 8;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+            })
+            .AddEntityFrameworkStores<VacatureDbContext>()
+            .AddDefaultTokenProviders();
+    }
+    
+    // Configure JWT Authentication
+    public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Configure JWT Authentication
+        var jwtSettings = configuration.GetSection("Jwt");
+        var secretKey = jwtSettings["SecretKey"];
+        var issuer = jwtSettings["Issuer"];
+        var audience = jwtSettings["Audience"];
+
+        if (secretKey == null) return;
+        var key = Encoding.ASCII.GetBytes(secretKey);
+        
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                };
+            });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
@@ -19,8 +20,10 @@ public class CreateVacatureEndpoint : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Contributor")]
     [ProducesResponseType(typeof(VacatureDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<VacatureDto>> CreateVacature(
         [FromBody] CreateVacatureCommand command, 
         CancellationToken cancellationToken)

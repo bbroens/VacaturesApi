@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using VacaturesApi.Domain;
+using VacaturesApi.Common.Authentication;
 using System.Reflection;
 
 namespace VacaturesApi.Persistence.Data;
@@ -7,8 +9,7 @@ namespace VacaturesApi.Persistence.Data;
 /// <summary>
 /// This class implements an EF DbContext used by the app to interact with the database.
 /// </summary>
-
-public class VacatureDbContext : DbContext
+public class VacatureDbContext : IdentityDbContext<ApplicationUser>
 {
     public VacatureDbContext(DbContextOptions<VacatureDbContext> options) 
         : base(options)
