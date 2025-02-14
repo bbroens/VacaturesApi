@@ -1,14 +1,14 @@
 ﻿# Basic Vacatures API
 
-A minimalistic asp.net REST API which exposes vacatures and offers CRUD operations. 
-These vacatures can be requested by an HTTP client or front-end.
+A lean but flexible asp.net REST API which provides vacatures as JSON objects and offers CRUD operations. 
+These vacatures can be requested by an HTTP client or front-end. The project includes a http file you can use to test all endpoints.
 
 
 ## Description
 
-The API offers simple, protected **CRUD** operations on the vacatures, so that vacatures can be fetched, listed, created, 
+The API offers simple, protected CRUD operations on the vacatures, so that vacatures can be fetched, listed, created, 
 updated or deleted. A front-end client using these end points is not included in the solution, 
-but the end points work and can be addressed with **Postman** or any HTTP request runner.
+but the end points are fully functional and can be addressed with **Postman** or any HTTP request tool.
 
 The API works with an **external SQL database**, which can be configured in the `appsettings.json` file.
 This application builds locally or into a **Docker container**, which can be deployed wherever you'd like.
@@ -16,31 +16,31 @@ This application builds locally or into a **Docker container**, which can be dep
 
 ## Vertical Slice Architecture
 
-Because this is a minimalistic application, the architecture is not very complex. 
-
-I have taken into account the following requirements:
+The architecture is designed to be simple and easy to understand, based on following requirements:
 
 * The API should be **fast and lightweight**;
 * The API should be **easy to adapt and extend**;
 * The solution should follow **modern best practices**;
 
-Because of the above, it makes sense to follow a **Vertical Slice Architecture** pattern. 
-This way we can iterate fast, focus on features and expand the domain with minimal refactoring.
+Because of the above, it makes sense to implement a **Vertical Slice Architecture**. 
+.This way we can iterate fast, focus on features and expand the domain with minimal jumps across layers. 
+All while still keeping responsibilities neatly separated.
 
-This flavor of the VSA pattern has  features in self-contained folders, with each feature having their own **command/query, 
-validator, handler and http endpoint**.
+My VSA architecture has features in self-contained folders, with each feature having their own **command/query, 
+validator, handler andhttp endpoint**.
 
-The solution implements a basic **CQRS** pattern using MediatR, where a feature can send a command (mutating data) or 
-a query (just fetching data).
+The solution implements a basic **CQRS** pattern using MediatR, where a feature can pass a command (mutating data) or 
+a query (just fetching data). The handlers are responsible for the actual logic, while the endpoint controllers are kept thin.
 
 Requests are validated using **FluentValidation** and endpoint results are rate limited and **paginated** and 
 use **response cache** where multiple can be fetched.
 
-The management endpoints are protected by role-based **Identity auth** using **JWT tokens**. To register API users and login,
+The management (admin) endpoints are protected by role-based **Identity auth** using **JWT tokens**. To register API users and login,
 separate endpoints are provided.
 
-If you prefer, you could move the domain, data and infrastructure into separate layers/projects. The solution can be 
-shaped into Onion/clean architecture. For an additional read on Vertical Slice Architecture, [check this post](https://www.jimmybogard.com/vertical-slice-architecture/) or [this article with another example](https://code-maze.com/vertical-slice-architecture-aspnet-core/).
+If you prefer, the solution can be shaped into Onion/clean architecture. 
+
+For an additional read on Vertical Slice Architecture, [check this post](https://www.jimmybogard.com/vertical-slice-architecture/) or [this article with another example](https://code-maze.com/vertical-slice-architecture-aspnet-core/).
 
 
 ## Packages and middleware
