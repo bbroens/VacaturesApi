@@ -10,7 +10,6 @@ namespace VacaturesApi.Features.Authentication;
 
 /// <summary>
 /// This repository exposes methods with API authentication operations.
-/// Error handling is done globally with the exception handling middleware.
 /// Validation is done with FluentValidation on the command/query per action.
 /// </summary>
 

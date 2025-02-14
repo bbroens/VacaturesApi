@@ -1,7 +1,7 @@
 ﻿namespace VacaturesApi.Features.Authentication;
 
 /// <summary>
-/// DTO structure to return an API authentication response.
+/// DTO describing an authentication response outbound from the auth endpoint.
 /// </summary>
 
 public record AuthResponseDto

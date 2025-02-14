@@ -1,8 +1,8 @@
 ﻿namespace VacaturesApi.Domain;
 
 /// <summary>
-/// Model class representing a single Vacature.
-/// Field requirement config is set at the persistence level to keep the model pure.
+/// Model representing a single Vacature.
+/// Field requirements are configured in the VacatureConfiguration class.
 /// </summary>
 
 public class Vacature

@@ -4,7 +4,7 @@ using MediatR;
 namespace VacaturesApi.Common.Validation;
 
 /// <summary>
-/// MediatR Pipeline Behavior to validate all incoming requests before they are handled.
+/// MediatR Pipeline Behavior to validate requests using FluentValidation before they are handled.
 /// </summary>
 
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>

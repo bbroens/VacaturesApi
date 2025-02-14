@@ -7,7 +7,7 @@ using VacaturesApi.Features.Authentication;
 namespace VacaturesApi.Persistence.Data;
 
 /// <summary>
-/// This class implements an EF DbContext used by the app to interact with the database.
+/// DbContext for vacature entities.
 /// </summary>
 
 public class VacatureDbContext : IdentityDbContext<ApplicationUser>

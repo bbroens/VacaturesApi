@@ -12,7 +12,6 @@ namespace VacaturesApi.ServiceExtensions;
 
 /// <summary>
 /// Contains extension methods for configuring services in the Program.cs.
-/// By defining the configuration here we can keep the Program.cs clean and focused.
 /// </summary>
 
 public static class ServiceExtensions

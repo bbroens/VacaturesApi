@@ -8,8 +8,7 @@ namespace VacaturesApi.Features.Vacatures;
 
 /// <summary>
 /// This repository exposes methods to asynchronously get, create, update and delete Vacatures.
-/// Error handling is done globally with the exception handling middleware.
-/// Validation is done with FluentValidation on the command/query per action.
+/// Validation is done using FluentValidation on the command/query per action.
 /// </summary>
 
 public class VacatureRepository : IVacatureRepository

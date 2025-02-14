@@ -1,7 +1,7 @@
 ﻿namespace VacaturesApi.Features.Vacatures.Update;
 
 /// <summary>
-/// DTO structure to update a vacature inbound from an endpoint.
+/// DTO describing an updated vacature inbound from an endpoint.
 /// </summary>
 
 public record UpdateVacatureDto

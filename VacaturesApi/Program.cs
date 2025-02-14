@@ -11,8 +11,7 @@ using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
 using VacaturesApi.ServiceExtensions;
 
-// The initial bootstrap logger is able to log errors during start-up.
-// On successful startup it is replaced by the logger configured by ConfigureSerilog().
+// The initial bootstrap logger is able to log errors during start-up. It's replaced by ConfigureSerilog().
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -21,36 +20,21 @@ try
 {
     Log.Information("Starting vacatures api...");
     
-    // Add services to the build container.
-    // ######################################
+    // ### Add services to the build container.
     
     var builder = WebApplication.CreateBuilder(args);
     
     // Register our custom global IExceptionHandler
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-    // Register our (/ServiceExtensions) Serilog Config
+    // Register services from the ServiceExtensions class
     builder.Services.ConfigureSerilog(builder.Configuration);
-
-    // Register our (/ServiceExtensions) CORS Config
     builder.Services.ConfigureCors();
-
-    // Register our (/ServiceExtensions) IIS Integration
     builder.Services.ConfigureIISIntegration();
-    
-    // Register our (/ServiceExtensions) DbContext used by the repositories
     builder.Services.ConfigureDbContext(builder.Configuration);
-    
-    // Register our (/ServiceExtensions) Rate Limiter
     builder.Services.ConfigureRateLimiter();
-    
-    // Register our (ServiceExtensions) response caching
     builder.Services.ConfigureResponseCaching();
-    
-    // Register our (ServiceExtensions) Identity configuration
     builder.Services.ConfigureIdentity();
-
-    // Register our (ServiceExtensions) JWT authentication configuration
     builder.Services.ConfigureJwtAuthentication(builder.Configuration);
     
     // Add services for controllers
@@ -67,18 +51,14 @@ try
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
     // Register MediatR and discover and register all request handlers in the assembly.
-    // Parameters of those handlers will be resolved by type using services from this DI container.
     builder.Services.AddMediatR(cfg => 
         cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
-    
-    // Register AuthRepository
     builder.Services.AddScoped<AuthRepository>();
     
-    // Configure the HTTP request pipeline.
-    // #####################################
+    // ### Configure the HTTP request pipeline.
     
     var app = builder.Build();
 
@@ -95,7 +75,7 @@ try
     if (app.Environment.IsProduction())
         app.UseHsts();
     
-    // Write streamlined request completion events, instead of the built-in ones.
+    // Write Serilog request events instead of the built-in ones.
     app.UseSerilogRequestLogging();
     
     app.UseHttpsRedirection();
@@ -113,6 +93,7 @@ try
     app.MapControllers();
     
     app.UseSwagger();
+    
     app.UseSwaggerUI();
     
     app.UseResponseCaching();
