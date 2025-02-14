@@ -4,9 +4,8 @@ using MediatR;
 namespace VacaturesApi.Features.Vacatures.Create;
 
 /// <summary>
-/// Command record describing a request to create a vacature.
-/// Tells Mediatr to pass the below fields from the request into the handler listening for it.
-/// Tells Mediatr that this request must return a VacatureDto.
+/// Command record describing a request to create a VacatureDto and return it.
+/// Uses Mediatr to pass the request fields to the handler listening.
 /// </summary>
 
 public record CreateVacatureCommand(

@@ -3,9 +3,8 @@
 namespace VacaturesApi.Features.Vacatures.GetById;
 
 /// <summary>
-/// Command record describing a request to return a vacature by id.
-/// Tells Mediatr to pass the Guid from the request into the handler listening for it.
-/// Tells Mediatr that this request must return a VacatureDto.
+/// Query record describing a request to return a VacatureDto by id.
+/// Uses Mediatr to pass the VacatureId to the handler listening.
 /// </summary>
 
 public record GetVacatureByIdQuery(Guid VacatureId) : IRequest<VacatureDto>;

@@ -1,7 +1,7 @@
 ﻿namespace VacaturesApi.Common.Exceptions;
 
 /// <summary>
-/// Exception thrown when an entity is not found.
+/// Exception to be thrown when an entity is not found.
 /// </summary>
 
 public class NotFoundException : Exception

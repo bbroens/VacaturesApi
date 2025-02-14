@@ -3,7 +3,7 @@
 namespace VacaturesApi.Features.Authentication.Login;
 
 /// <summary>
-/// DTO structure describing an API user login request.
+/// DTO describing an API user login inbound from the login endpoint.
 /// </summary>
 
 public record LoginDto

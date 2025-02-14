@@ -4,9 +4,8 @@ using VacaturesApi.Common.Pagination;
 namespace VacaturesApi.Features.Vacatures.List;
 
 /// <summary>
-/// Query record describing a request to return a paginated list of vacatures.
-/// Carries no data for the handler listening for it.
-/// Tells Mediatr that this request must return a paginated list of VacatureDto.
+/// Query record describing a request to return a paginated list of VacatureDto.
+/// Passes no data to the handler listening.
 /// </summary>
 
 public record ListVacaturesQuery : IRequest<PaginatedResult<VacatureDto>>

@@ -7,8 +7,7 @@ namespace VacaturesApi.Common.Exceptions;
 /// <summary>
 /// Global Exception Handler used as Program middleware.
 /// Handles exceptions thrown in the app and returns them as JSON responses.
-/// This way we have a central, extensible mechanism for exception logging and error responses.
-/// Uses FluentValidation for validation errors.
+/// Uses FluentValidation for validation errors instead of manually handling them.
 /// </summary>
 
 public class GlobalExceptionHandler : IExceptionHandler
