@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using MediatR;
+using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Authentication.Register;
 
 /// <summary>
-/// Handler for registering a new API user.
-/// Listens to command of type RegisterCommand through MediatR. 
+/// Handler for RegisterCommand requests, used to register a new API user.
 /// </summary>
 
 public class LoginHandler : IRequestHandler<RegisterCommand, AuthResponseDto>

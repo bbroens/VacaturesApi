@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using MediatR;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Domain;
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
 /// <summary>
-/// Handler for adding a vacature.
-/// Listens to command of type CreateVacatureCommand through MediatR. 
+/// Handler for adding a vacature when passed a CreateVacatureCommand.
 /// </summary>
 
 public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, VacatureDto>

@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using MediatR;
+using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Authentication.Login;
 
 /// <summary>
-/// Handler for logging in as an API user.
-/// Listens to command of type LoginCommand through MediatR. 
+/// Handler for LoginCommand requests, used to log in as an API user.
 /// </summary>
 
 public class LoginHandler : IRequestHandler<LoginCommand, AuthResponseDto>

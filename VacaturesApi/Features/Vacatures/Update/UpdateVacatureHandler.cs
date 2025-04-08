@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MediatR;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Domain;
@@ -7,8 +6,7 @@ using VacaturesApi.Domain;
 namespace VacaturesApi.Features.Vacatures.Update;
 
 /// <summary>
-/// Handler for updating a vacature.
-/// Listens to command of type UpdateVacatureCommand through MediatR. 
+/// Handler for updating a vacature when passed an UpdateVacatureCommand.
 /// </summary>
 
 public class UpdateVacatureHandler : IRequestHandler<UpdateVacatureCommand, VacatureDto>

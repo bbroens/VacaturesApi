@@ -3,15 +3,14 @@
 namespace VacaturesApi.Features.Vacatures.Update;
 
 /// <summary>
-/// Validator for the UpdateVacatureCommand
-/// Update uses a PUT request to update changed fields only,
-/// so except an id no fields are required.
+/// Validator for the UpdateVacatureCommand.
 /// </summary>
 
 public class UpdateVacatureCommandValidator : AbstractValidator<UpdateVacatureDto>
 {
     public UpdateVacatureCommandValidator()
     {
+        // PUT only updates changed fields, so just the id is required.
         RuleFor(x => x.VacatureId)
             .NotEmpty().WithMessage("Vacature ID is required");
 

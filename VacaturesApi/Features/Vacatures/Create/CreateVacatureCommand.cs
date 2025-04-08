@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MediatR;
+using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
 /// <summary>
 /// Command record describing a request to create a VacatureDto and return it.
-/// Uses Mediatr to pass the request fields to the handler listening.
 /// </summary>
 
 public record CreateVacatureCommand(

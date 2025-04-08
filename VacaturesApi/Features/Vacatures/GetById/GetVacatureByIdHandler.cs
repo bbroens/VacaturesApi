@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MediatR;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Domain;
@@ -7,8 +6,7 @@ using VacaturesApi.Domain;
 namespace VacaturesApi.Features.Vacatures.GetById;
 
 /// <summary>
-/// Handler for fetching a vacature by its id.
-/// Listens to query of type GetVacatureByIdQuery through MediatR. 
+/// Handler for fetching a vacature by id when passed a GetVacatureByIdQuery.
 /// </summary>
 
 public class GetVacatureByIdHandler : IRequestHandler<GetVacatureByIdQuery, VacatureDto>

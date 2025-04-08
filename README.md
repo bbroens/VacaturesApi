@@ -29,7 +29,7 @@ All while still keeping responsibilities neatly separated.
 My VSA architecture has features in self-contained folders, with each feature having their own **command/query, 
 validator, handler andhttp endpoint**.
 
-The solution implements a basic **CQRS** pattern using MediatR, where a feature can pass a command (mutating data) or 
+The solution implements a basic **CQRS** pattern with a custom dispatcher similar to MediatR, where a feature can pass a command (mutating data) or 
 a query (just fetching data). The handlers are responsible for the actual logic, while the endpoint controllers are kept thin.
 
 Requests are validated using **FluentValidation** and endpoint results are rate limited and **paginated** and 
@@ -46,7 +46,6 @@ For an additional read on Vertical Slice Architecture, [check this post](https:/
 ## Packages and middleware
 
 * [Serilog](https://serilog.net/) for logging,
-* [MediatR](https://github.com/jbogard/MediatR) for internal signaling and CQRS,
 * [Swagger](https://swagger.io/) for API documentation,
 * [Docker](https://www.docker.com/) for containerization,
 * [EF Core](https://docs.microsoft.com/en-us/ef/core/) for the database,

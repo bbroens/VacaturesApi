@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using VacaturesApi.Common.Dispatcher;
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
@@ -12,11 +12,11 @@ namespace VacaturesApi.Features.Vacatures.Create;
 [Route("api/vacatures")]
 public class CreateVacatureEndpoint : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly Dispatcher _dispatcher;
 
-    public CreateVacatureEndpoint(IMediator mediator, ILogger<CreateVacatureEndpoint> logger)
+    public CreateVacatureEndpoint(Dispatcher dispatcher)
     {
-        _mediator = mediator;
+        _dispatcher = dispatcher;
     }
 
     [HttpPost]
@@ -29,7 +29,7 @@ public class CreateVacatureEndpoint : ControllerBase
         CancellationToken cancellationToken)
     {
         Log.Information("Creating new vacature: {FunctionTitle}", command.FunctionTitle);
-        var result = await _mediator.Send(command, cancellationToken);
+        var result = await _dispatcher.DispatchAsync<CreateVacatureCommand, VacatureDto>(command, cancellationToken);
         return CreatedAtAction(nameof(CreateVacature), new { id = result.VacatureId }, result);
     }
 }

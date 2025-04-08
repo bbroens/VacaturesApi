@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using MediatR;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Common.Pagination;
 
 namespace VacaturesApi.Features.Vacatures.List;
 
 /// <summary>
-/// Handler for fetching a paginated list of vacatures.
-/// Listens to query of type ListVacaturesQuery through MediatR. 
+/// Handler for fetching a paginated list of vacatures when passed a ListVacaturesQuery.
 /// </summary>
 
 public class ListVacaturesHandler : IRequestHandler<ListVacaturesQuery, PaginatedResult<VacatureDto>>

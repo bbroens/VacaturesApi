@@ -1,11 +1,11 @@
 using Serilog;
-using MediatR;
 using FluentValidation;
 using System.Reflection;
+using VacaturesApi.Common.Dispatcher;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
 using VacaturesApi.Common.Interfaces;
-using VacaturesApi.Common.Validation;
+using VacaturesApi.Common.RequestBehaviors;
 using VacaturesApi.Features.Authentication;
 using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
@@ -45,14 +45,14 @@ try
 
     // Add FluentValidation
     builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-    builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+    builder.Services.AddTransient(typeof(IRequestBehavior<,>), typeof(ValidationBehavior<,>));
     
     // Register Automapper
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
-    // Register MediatR and discover and register all request handlers in the assembly.
-    builder.Services.AddMediatR(cfg => 
-        cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+    // Register CQRS Dispatcher and register all request handlers in the assembly.
+    builder.Services.AddScoped<Dispatcher>();
+    builder.Services.AddHandlers(Assembly.GetExecutingAssembly());
 
     // Register repositories
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
@@ -71,10 +71,12 @@ try
     }
     
     app.UseExceptionHandler(b => { });
-    
+
     if (app.Environment.IsProduction())
+    {
         app.UseHsts();
-    
+    }
+
     // Write Serilog request events instead of the built-in ones.
     app.UseSerilogRequestLogging();
     
