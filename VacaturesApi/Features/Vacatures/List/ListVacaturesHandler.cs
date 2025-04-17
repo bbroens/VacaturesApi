@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using Mapster;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Common.Pagination;
 
@@ -11,12 +11,10 @@ namespace VacaturesApi.Features.Vacatures.List;
 public class ListVacaturesHandler : IRequestHandler<ListVacaturesQuery, PaginatedResult<VacatureDto>>
 {
     private readonly IVacatureRepository _repository;
-    private readonly IMapper _mapper;
 
-    public ListVacaturesHandler(IVacatureRepository repository, IMapper mapper)
+    public ListVacaturesHandler(IVacatureRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
     
     public async Task<PaginatedResult<VacatureDto>> Handle(ListVacaturesQuery request, CancellationToken cancellationToken)
@@ -26,7 +24,7 @@ public class ListVacaturesHandler : IRequestHandler<ListVacaturesQuery, Paginate
 
         return new PaginatedResult<VacatureDto>
         {
-            Items = _mapper.Map<List<VacatureDto>>(vacatures),
+            Items = vacatures.Adapt<List<VacatureDto>>(),
             TotalCount = totalCount,
             PageNumber = request.Page,
             PageSize = request.PageSize
