@@ -5,7 +5,7 @@ using VacaturesApi.Features.Vacatures.Update;
 namespace VacaturesApi.Features.Vacatures;
 
 /// <summary>
-/// AutoMapper profile for mapping Vacatures to their DTO's.
+/// AutoMapper profile for mapping Vacatures to their DTOs.
 /// </summary>
 
 public class VacatureMappingProfile : Profile

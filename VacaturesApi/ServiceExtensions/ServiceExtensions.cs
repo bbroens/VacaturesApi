@@ -1,10 +1,12 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using Serilog;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Features.Authentication;
 using VacaturesApi.Persistence.Data;
 
@@ -101,14 +103,12 @@ public static class ServiceExtensions
     {
         services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                // Password settings
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequiredLength = 8;
-
-                // Lockout settings
+                
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
@@ -120,7 +120,6 @@ public static class ServiceExtensions
     // Configure JWT Authentication
     public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        // Configure JWT Authentication
         var jwtSettings = configuration.GetSection("Jwt");
         var secretKey = jwtSettings["SecretKey"];
         var issuer = jwtSettings["Issuer"];
@@ -147,5 +146,23 @@ public static class ServiceExtensions
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
         });
+    }
+    
+    // Find and register all command/query request handlers
+    public static IServiceCollection AddHandlers(this IServiceCollection services, Assembly assembly)
+    {
+        var handlerTypes = assembly.GetTypes()
+            .Where(t => !t.IsAbstract && !t.IsInterface &&
+                        t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>)));
+        
+        foreach (var handlerType in handlerTypes)
+        {
+            var handlerInterface = handlerType.GetInterfaces()
+                .First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>));
+
+            services.AddTransient(handlerInterface, handlerType);
+        }
+
+        return services;
     }
 }

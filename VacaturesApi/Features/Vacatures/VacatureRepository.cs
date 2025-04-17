@@ -7,8 +7,8 @@ using VacaturesApi.Persistence.Data;
 namespace VacaturesApi.Features.Vacatures;
 
 /// <summary>
-/// This repository exposes methods to asynchronously get, create, update and delete Vacatures.
-/// Validation is done using FluentValidation on the command/query per action.
+/// Repository of async methods to get, create, update and delete Vacatures.
+/// Validation is done using FluentValidation on the command/query.
 /// </summary>
 
 public class VacatureRepository : IVacatureRepository

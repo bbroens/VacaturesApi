@@ -1,5 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using VacaturesApi.Common.Dispatcher;
 
 namespace VacaturesApi.Features.Vacatures.GetById;
 
@@ -10,11 +10,11 @@ namespace VacaturesApi.Features.Vacatures.GetById;
 [Route("api/vacatures")]
 public class GetVacatureByIdEndpoint : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly Dispatcher _dispatcher;
 
-    public GetVacatureByIdEndpoint(IMediator mediator, ILogger<GetVacatureByIdEndpoint> logger)
+    public GetVacatureByIdEndpoint(Dispatcher dispatcher)
     {
-        _mediator = mediator;
+        _dispatcher = dispatcher;
     }
 
     [HttpGet("{vacatureId:guid}")]
@@ -25,7 +25,7 @@ public class GetVacatureByIdEndpoint : ControllerBase
         CancellationToken cancellationToken)
     {
         var query = new GetVacatureByIdQuery(vacatureId);
-        var result = await _mediator.Send(query, cancellationToken);
+        var result = await _dispatcher.DispatchAsync<GetVacatureByIdQuery, VacatureDto>(query, cancellationToken);
         return Ok(result);
     }
 }

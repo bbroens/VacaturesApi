@@ -16,7 +16,7 @@ public static class DataSeeder
         Log.Information("Checking if development database is empty...");
         if (context.Vacatures.Any()) return;
         
-        Log.Information("No Vacatures in database. Seeding data...");
+        Log.Information("No Vacatures in development database. Seeding data...");
         
         context.Vacatures.AddRange(
             new Vacature

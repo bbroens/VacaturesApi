@@ -1,14 +1,13 @@
-﻿using MediatR;
+﻿using VacaturesApi.Common;
 using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Vacatures.Delete;
 
 /// <summary>
-/// Handler for deleting a vacature.
-/// Listens to command of type DeleteVacatureCommand through MediatR. 
+/// Handler for deleting a vacature when passed a DeleteVacatureCommand.
 /// </summary>
 
-public class DeleteVacatureHandler : IRequestHandler<DeleteVacatureCommand>
+public class DeleteVacatureHandler : IRequestHandler<DeleteVacatureCommand, EmptyResponse>
 {
     private readonly IVacatureRepository _repository;
 
@@ -17,8 +16,9 @@ public class DeleteVacatureHandler : IRequestHandler<DeleteVacatureCommand>
         _repository = repository;
     }
     
-    public async Task Handle(DeleteVacatureCommand request, CancellationToken cancellationToken)
+    public async Task<EmptyResponse> Handle(DeleteVacatureCommand request, CancellationToken cancellationToken)
     {
         await _repository.DeleteAsync(request.VacatureId, cancellationToken);
+        return EmptyResponse.Instance;
     }
 }

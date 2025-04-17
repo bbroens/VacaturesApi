@@ -1,36 +1,33 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using VacaturesApi.Common;
+using VacaturesApi.Common.Dispatcher;
 
 namespace VacaturesApi.Features.Vacatures.Delete;
-
-/// <summary>
-/// Endpoint for deleting a specific vacature
-/// </summary>
 
 [Route("api/vacatures")]
 public class DeleteVacatureEndpoint : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly Dispatcher _dispatcher;
 
-    public DeleteVacatureEndpoint(IMediator mediator)
+    public DeleteVacatureEndpoint(Dispatcher dispatcher)
     {
-        _mediator = mediator;
+        _dispatcher = dispatcher;
     }
-    
+
     [HttpDelete("{vacatureId:guid}")]
     [Authorize(Roles = "Contributor")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult> DeleteVacature(
-        Guid vacatureId, 
+        Guid vacatureId,
         CancellationToken cancellationToken)
     {
         Log.Information("Requested to delete vacature with id: {vacatureId}", vacatureId);
         var command = new DeleteVacatureCommand(vacatureId);
-        await _mediator.Send(command, cancellationToken);
+        await _dispatcher.DispatchAsync<DeleteVacatureCommand, EmptyResponse>(command, cancellationToken);
         return NoContent();
     }
 }

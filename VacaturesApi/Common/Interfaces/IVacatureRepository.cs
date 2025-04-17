@@ -3,7 +3,7 @@
 namespace VacaturesApi.Common.Interfaces;
 
 /// <summary>
-/// This repository exposes methods to asynchronously get, create, update and delete Vacatures.
+/// Interface for a repository of async methods used to manage Vacature entities.
 /// </summary>
 
 public interface IVacatureRepository

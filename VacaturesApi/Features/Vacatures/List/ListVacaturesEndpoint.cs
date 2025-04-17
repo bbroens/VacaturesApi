@@ -1,35 +1,35 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using VacaturesApi.Common.Dispatcher;
 using VacaturesApi.Common.Pagination;
 
 namespace VacaturesApi.Features.Vacatures.List;
 
 /// <summary>
-/// Endpoint for retrieving a paginated & cached list of all vacatures ordered by creation date.
+/// Endpoint for retrieving a paginated, cached list of all vacatures.
 /// </summary>
 
 [Route("api/vacatures")]
 public class ListVacaturesEndpoint : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly Dispatcher _dispatcher;
 
-    public ListVacaturesEndpoint(IMediator mediator)
+    public ListVacaturesEndpoint(Dispatcher dispatcher)
     {
-        _mediator = mediator;
+        _dispatcher = dispatcher;
     }
-    
+
     [HttpGet]
-    [ResponseCache(Duration = 30)] // cache response for 30 seconds
-    [EnableRateLimiting("ExpensiveEndpointsPolicy")] // apply special rate limiting
+    [ResponseCache(Duration = 30)] // Cache response for 30 seconds
+    [EnableRateLimiting("ExpensiveEndpointsPolicy")] // Apply expensive rate limiting
     [ProducesResponseType(typeof(PaginatedResult<VacatureDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginatedResult<VacatureDto>>> ListVacatures(
         CancellationToken cancellationToken,
-        [FromQuery] int page = 1, // default current page
-        [FromQuery] int pageSize = 10) // default items per page
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
     {
         var query = new ListVacaturesQuery(page, pageSize);
-        var result = await _mediator.Send(query, cancellationToken);
+        var result = await _dispatcher.DispatchAsync<ListVacaturesQuery, PaginatedResult<VacatureDto>>(query, cancellationToken);
         return Ok(result);
     }
 }

@@ -1,7 +1,7 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using VacaturesApi.Common.Dispatcher;
 
 namespace VacaturesApi.Features.Vacatures.Create;
 
@@ -12,11 +12,11 @@ namespace VacaturesApi.Features.Vacatures.Create;
 [Route("api/vacatures")]
 public class CreateVacatureEndpoint : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly Dispatcher _dispatcher;
 
-    public CreateVacatureEndpoint(IMediator mediator, ILogger<CreateVacatureEndpoint> logger)
+    public CreateVacatureEndpoint(Dispatcher dispatcher)
     {
-        _mediator = mediator;
+        _dispatcher = dispatcher;
     }
 
     [HttpPost]
@@ -25,11 +25,12 @@ public class CreateVacatureEndpoint : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<VacatureDto>> CreateVacature(
-        [FromBody] CreateVacatureCommand command, 
+        [FromBody] VacatureDto vacatureDto, 
         CancellationToken cancellationToken)
     {
-        Log.Information("Creating new vacature: {FunctionTitle}", command.FunctionTitle);
-        var result = await _mediator.Send(command, cancellationToken);
+        var command = new CreateVacatureCommand(vacatureDto);
+        Log.Information("Creating new vacature: {FunctionTitle}", command.Vacature.FunctionTitle);
+        var result = await _dispatcher.DispatchAsync<CreateVacatureCommand, VacatureDto>(command, cancellationToken);
         return CreatedAtAction(nameof(CreateVacature), new { id = result.VacatureId }, result);
     }
 }

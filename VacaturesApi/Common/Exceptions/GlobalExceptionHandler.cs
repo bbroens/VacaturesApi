@@ -7,7 +7,7 @@ namespace VacaturesApi.Common.Exceptions;
 /// <summary>
 /// Global Exception Handler used as Program middleware.
 /// Handles exceptions thrown in the app and returns them as JSON responses.
-/// Uses FluentValidation for validation errors instead of manually handling them.
+/// Uses FluentValidation for validation errors.
 /// </summary>
 
 public class GlobalExceptionHandler : IExceptionHandler
@@ -17,16 +17,19 @@ public class GlobalExceptionHandler : IExceptionHandler
         Exception exception, 
         CancellationToken cancellationToken)
     {
-        // Check if cancellation has been requested
         cancellationToken.ThrowIfCancellationRequested();
-
-        // Determine exception type
+        
         switch (exception)
         {
+            // Validation exceptions from FluentValidation
             case ValidationException validationEx:
                 return await HandleValidationException(httpContext, validationEx, cancellationToken);
+            
+            // Custom exception types
             case NotFoundException notFoundEx:
                 return await HandleNotFoundException(httpContext, notFoundEx, cancellationToken);
+            case ConcurrentUpdateException concurrencyEx:
+                return await HandleConcurrentUpdateException(httpContext, concurrencyEx, cancellationToken);
             default:
                 return await HandleUnhandledException(httpContext, exception, cancellationToken);
         }
@@ -69,6 +72,25 @@ public class GlobalExceptionHandler : IExceptionHandler
             Type = "Not Found",
             Title = "Resource not found",
             Status = StatusCodes.Status404NotFound,
+            Detail = ex.Message
+        };
+
+        await context.Response.WriteAsJsonAsync(response, cancellationToken);
+        return true;
+    }
+    
+    private async Task<bool> HandleConcurrentUpdateException(HttpContext context, ConcurrentUpdateException ex, CancellationToken cancellationToken)
+    {
+        Log.Warning(ex, "A concurrency conflict occurred");
+
+        context.Response.StatusCode = StatusCodes.Status409Conflict;
+        context.Response.ContentType = "application/json";
+
+        var response = new
+        {
+            Type = "Concurrency Conflict",
+            Title = "A concurrency conflict occurred",
+            Status = StatusCodes.Status409Conflict,
             Detail = ex.Message
         };
 
