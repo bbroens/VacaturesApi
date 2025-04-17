@@ -4,7 +4,8 @@ using VacaturesApi.Common.Interfaces;
 namespace VacaturesApi.Common.RequestBehaviors;
 
 /// <summary>
-/// Request behavior that validates commands/queries using FluentValidation before they are handled.
+/// Request behavior that validates commands/queries using FluentValidation.
+/// This behavior runs before the request's handler.
 /// </summary>
 
 public class ValidationBehavior<TRequest, TResponse> : IRequestBehavior<TRequest, TResponse>

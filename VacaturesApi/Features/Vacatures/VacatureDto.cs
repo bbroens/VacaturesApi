@@ -1,7 +1,7 @@
 ﻿namespace VacaturesApi.Features.Vacatures;
 
 /// <summary>
-/// DTO describing a vacature outbound from an endpoint.
+/// DTO describing a fully detailed vacature.
 /// </summary>
 
 public record VacatureDto(

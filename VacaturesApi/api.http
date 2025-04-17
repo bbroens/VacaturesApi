@@ -1,5 +1,5 @@
 @HostAddress = https://localhost:5001
-@JwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE3N2I1ZmY3LTQ1ZjctNGZjNS1hMWU5LTI3ODQ4ODM1YTg5ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3R1c2VyQHZhY2F0dXJlcy5hcGkiLCJqdGkiOiIwM2U4NGYzNS0xZDIxLTQ4OTktYjlkNy1iYTc1ZWVmOGIxZDciLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDb250cmlidXRvciIsImV4cCI6MTc0NDE5MTk0MywiaXNzIjoiVmFjYXR1cmVzQXBpIiwiYXVkIjoiVmFjYXR1cmVzQXBpQXVkaWVuY2UifQ.8wIpcWUdTkfaIB0tg1-HKpNFEgnLuh9EaUjM5D-wob0
+@JwtToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjE3N2I1ZmY3LTQ1ZjctNGZjNS1hMWU5LTI3ODQ4ODM1YTg5ZCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3R1c2VyQHZhY2F0dXJlcy5hcGkiLCJqdGkiOiIxNTQ0NTE0ZC04Mjg0LTQ4OGMtOTgzNC1mNTAzZTk2N2E2MGIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJDb250cmlidXRvciIsImV4cCI6MTc0NDk3MTIzNCwiaXNzIjoiVmFjYXR1cmVzQXBpIiwiYXVkIjoiVmFjYXR1cmVzQXBpQXVkaWVuY2UifQ.3MPgZcpj-ajNbaVxkLS67m9Hz-_z2ONOSb6TJoVBVgg
 
 ### Add a user for authentication
 ### Should return 200
@@ -56,16 +56,16 @@ Authorization: Bearer {{JwtToken}}
 
 {
   "UrlSlug": "junior-software-engineer-net",
-  "FunctionTitle": "Senior Software Engineer (.NET)",
+  "FunctionTitle": "Software Engineer (.NET)",
   "Availability": "Full-time",
   "Location": "Utrecht, Netherlands",
-  "ContactPerson": "Janne Siemens",
-  "Description": "We are looking for an experienced .NET developer to join our team.",
+  "ContactPerson": "Janne Siemen",
+  "Description": "We are looking for a .NET developer to join our team.",
   "WhatToExpect": "Challenging projects, modern tech stack, great team culture",
   "Responsibilities": "Develop and maintain .NET applications, mentor junior developers",
   "Offer": "Competitive salary, professional growth, flexible working hours",
-  "Requirements": "5+ years of .NET development, strong C# skills, microservices experience",
-  "SalaryRange": "€75,000 - €90,000",
+  "Requirements": "A few years of .NET development, strong C# skills, microservices experience",
+  "SalaryRange": "€60,000 - €80,000",
   "Industry": "Technology",
   "ListPriority": 1,
   "Hidden": false,
@@ -86,7 +86,7 @@ Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/Delete: DELETE a single vacature by VacatureId
 ### Should return 204 (if VacatureId existed and was deleted)
-DELETE {{HostAddress}}/api/vacatures/4d0f9686-c3c5-481f-9b22-e4bb82bac936
+DELETE {{HostAddress}}/api/vacatures/c9d88e98-b843-4959-a805-83f7cae73dc2
 Authorization: Bearer {{JwtToken}}
 
 ### Features/Vacatures/Delete: DELETE a non-existing vacature by VacatureId

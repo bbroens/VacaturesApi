@@ -1,7 +1,9 @@
 namespace VacaturesApi.Common.Interfaces;
 
 /// <summary>
-/// Interface for request behaviors to be executed before the request handler.
+/// Interface for request behaviors to be executed before the request's handler.
+/// Implementations will be automatically registered to the DI container
+/// and then matched to a request type by the Dispatcher.
 /// </summary>
 
 public interface IRequestBehavior<in TRequest, TResponse>

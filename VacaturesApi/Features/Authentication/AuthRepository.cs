@@ -10,7 +10,7 @@ namespace VacaturesApi.Features.Authentication;
 
 /// <summary>
 /// This repository exposes methods with API authentication operations.
-/// Validation is done with FluentValidation on the command/query per action.
+/// Validation is done with FluentValidation on the command/query level.
 /// </summary>
 
 public class AuthRepository

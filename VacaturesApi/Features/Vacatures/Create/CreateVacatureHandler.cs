@@ -24,22 +24,22 @@ public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, Vaca
         var vacature = new Vacature 
         {
             VacatureId = Guid.NewGuid(),
-            UrlSlug = request.UrlSlug,
-            FunctionTitle = request.FunctionTitle,  
-            Availability = request.Availability,  
-            Location = request.Location,  
-            ContactPerson = request.ContactPerson,  
-            Description = request.Description,  
-            WhatToExpect = request.WhatToExpect,  
-            Responsibilities = request.Responsibilities,  
-            Offer = request.Offer,  
-            Requirements = request.Requirements,  
-            SalaryRange= request.SalaryRange,  
-            Industry = request.Industry,  
-            ListPriority = request.ListPriority,
-            Hidden = request.Hidden,
+            UrlSlug = request.Vacature.UrlSlug,
+            FunctionTitle = request.Vacature.FunctionTitle,  
+            Availability = request.Vacature.Availability,  
+            Location = request.Vacature.Location,  
+            ContactPerson = request.Vacature.ContactPerson,  
+            Description = request.Vacature.Description,  
+            WhatToExpect = request.Vacature.WhatToExpect,  
+            Responsibilities = request.Vacature.Responsibilities,  
+            Offer = request.Vacature.Offer,  
+            Requirements = request.Vacature.Requirements,  
+            SalaryRange= request.Vacature.SalaryRange,  
+            Industry = request.Vacature.Industry,  
+            ListPriority = request.Vacature.ListPriority,
+            Hidden = request.Vacature.Hidden,
             CreatedAt = DateTime.UtcNow, 
-            UpdatedAt = request.UpdatedAt
+            UpdatedAt = request.Vacature.UpdatedAt
         };
 
         var createdVacature = await _repository.AddAsync(vacature, cancellationToken);

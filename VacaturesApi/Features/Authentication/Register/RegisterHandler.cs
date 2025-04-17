@@ -10,12 +10,10 @@ namespace VacaturesApi.Features.Authentication.Register;
 public class LoginHandler : IRequestHandler<RegisterCommand, AuthResponseDto>
 {
     private readonly AuthRepository _authRepository;
-    private readonly IMapper _mapper;
 
     public LoginHandler(AuthRepository repository, IMapper mapper)
     {
         _authRepository = repository;
-        _mapper = mapper;
     }
 
     public async Task<AuthResponseDto> Handle(RegisterCommand request, CancellationToken cancellationToken)

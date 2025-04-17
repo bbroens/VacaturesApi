@@ -148,13 +148,13 @@ public static class ServiceExtensions
         });
     }
     
-    // Find all command/query handlers to register
+    // Find and register all command/query request handlers
     public static IServiceCollection AddHandlers(this IServiceCollection services, Assembly assembly)
     {
         var handlerTypes = assembly.GetTypes()
             .Where(t => !t.IsAbstract && !t.IsInterface &&
                         t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>)));
-
+        
         foreach (var handlerType in handlerTypes)
         {
             var handlerInterface = handlerType.GetInterfaces()

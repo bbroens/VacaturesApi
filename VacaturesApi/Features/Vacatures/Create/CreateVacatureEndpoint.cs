@@ -25,10 +25,11 @@ public class CreateVacatureEndpoint : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<VacatureDto>> CreateVacature(
-        [FromBody] CreateVacatureCommand command, 
+        [FromBody] VacatureDto vacatureDto, 
         CancellationToken cancellationToken)
     {
-        Log.Information("Creating new vacature: {FunctionTitle}", command.FunctionTitle);
+        var command = new CreateVacatureCommand(vacatureDto);
+        Log.Information("Creating new vacature: {FunctionTitle}", command.Vacature.FunctionTitle);
         var result = await _dispatcher.DispatchAsync<CreateVacatureCommand, VacatureDto>(command, cancellationToken);
         return CreatedAtAction(nameof(CreateVacature), new { id = result.VacatureId }, result);
     }

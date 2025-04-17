@@ -1,4 +1,5 @@
-﻿using VacaturesApi.Common.Interfaces;
+﻿using VacaturesApi.Common;
+using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Vacatures.Delete;
 

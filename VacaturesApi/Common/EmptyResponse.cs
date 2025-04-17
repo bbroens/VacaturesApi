@@ -1,4 +1,4 @@
-namespace VacaturesApi.Common.Interfaces; 
+namespace VacaturesApi.Common; 
 
 /// <summary>
 /// Empty response for requests that do not return a value.

@@ -3,7 +3,7 @@ using VacaturesApi.Common.Interfaces;
 namespace VacaturesApi.Common.Dispatcher;
 
 /// <summary>
-/// Finds the appropriate request handler and wraps it with implemented behaviors.
+/// Finds and resolves the appropriate handler for a request and wraps it with implemented behaviors.
 /// </summary>
 
 public class Dispatcher
@@ -14,13 +14,14 @@ public class Dispatcher
     {
         _serviceProvider = serviceProvider;
     }
-    
+
     public async Task<TResult> DispatchAsync<TRequest, TResult>(TRequest request, CancellationToken cancellationToken)
         where TRequest : IRequest<TResult>
     {
-        // Find implementations of IRequestBehavior in DI container
+        // Resolve behaviors from the DI container for each request
         var behaviors = _serviceProvider.GetServices<IRequestBehavior<TRequest, TResult>>();
-        // Find matching handler for the request type
+
+        // Resolve the handler from the DI container for each request
         var handler = _serviceProvider.GetService<IRequestHandler<TRequest, TResult>>();
 
         if (handler == null)
@@ -37,7 +38,7 @@ public class Dispatcher
             var next = handlerDelegate;
             handlerDelegate = () => behavior.Process(request, next, cancellationToken);
         }
-        
+
         return await handlerDelegate();
     }
 }

@@ -18,16 +18,14 @@ public class DbContextFactory : IDesignTimeDbContextFactory<VacatureDbContext>
             .AddJsonFile("appsettings.json")
             .AddEnvironmentVariables()
             .Build();
-
-        // Get connection string
+        
         var connectionString = configuration.GetConnectionString("VacatureDbConnection");
 
         // Create DbContextOptionsBuilder
         var optionsBuilder = new DbContextOptionsBuilder<VacatureDbContext>();
         optionsBuilder.UseSqlServer(connectionString, 
             b => b.MigrationsAssembly(typeof(VacatureDbContext).Assembly.FullName));
-
-        // Return context
+        
         return new VacatureDbContext(optionsBuilder.Options);
     }
 }

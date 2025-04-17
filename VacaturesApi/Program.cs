@@ -11,14 +11,14 @@ using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
 using VacaturesApi.ServiceExtensions;
 
-// The initial bootstrap logger is able to log errors during start-up. It's replaced by ConfigureSerilog().
+// Bootstrap logger to log errors during startup. Replaced after by ConfigureSerilog()
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
 
 try
 {
-    Log.Information("Starting vacatures api...");
+    Log.Information("Starting Vacatures API...");
     
     // ### Add services to the build container.
     
@@ -50,7 +50,7 @@ try
     // Register Automapper
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
-    // Register CQRS Dispatcher and register all request handlers in the assembly.
+    // Register CQRS Dispatcher and register all request handlers in the assembly
     builder.Services.AddScoped<Dispatcher>();
     builder.Services.AddHandlers(Assembly.GetExecutingAssembly());
 
@@ -58,13 +58,13 @@ try
     builder.Services.AddScoped<IVacatureRepository, VacatureRepository>();
     builder.Services.AddScoped<AuthRepository>();
     
-    // ### Configure the HTTP request pipeline.
+    // ### Configure the HTTP request pipeline
     
     var app = builder.Build();
 
     if (app.Environment.IsDevelopment())
     {
-        // Seed development Db once if empty
+        // Seed development DB once if empty
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<VacatureDbContext>();
         DataSeeder.Seed(dbContext);
@@ -77,7 +77,7 @@ try
         app.UseHsts();
     }
 
-    // Write Serilog request events instead of the built-in ones.
+    // Write Serilog request events instead of the built-in ones
     app.UseSerilogRequestLogging();
     
     app.UseHttpsRedirection();
@@ -103,12 +103,12 @@ try
     app.Run();
 
     // On application exit
-    Log.Information("Web application stopped cleanly");
+    Log.Information("Vacatures API stopped cleanly");
     return 0;
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "The application failed to start correctly.");
+    Log.Fatal(ex, "Vacatures API failed to start correctly.");
     return 1;
 }
 finally

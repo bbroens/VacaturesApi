@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using VacaturesApi.Common;
 using VacaturesApi.Common.Dispatcher;
-using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Vacatures.Delete;
 
