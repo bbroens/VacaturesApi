@@ -27,7 +27,7 @@ Because of the above, it makes sense to implement a **Vertical Slice Architectur
 All while still keeping responsibilities neatly separated.
 
 My VSA architecture has features in self-contained folders, with each feature having their own **command/query, 
-validator, handler and http endpoint**.
+validator, handler and HTTP endpoint**.
 
 The solution implements a basic **CQRS** pattern with a custom dispatcher similar to MediatR, where a feature can pass a command (mutating data) or 
 a query (just fetching data). The handlers are responsible for the actual logic, while the endpoint controllers are kept thin.
@@ -48,8 +48,7 @@ For an additional read on Vertical Slice Architecture, [check this post](https:/
 * [Serilog](https://serilog.net/) for logging,
 * [Swagger](https://swagger.io/) for API documentation,
 * [Docker](https://www.docker.com/) for containerization,
-* [EF Core](https://docs.microsoft.com/en-us/ef/core/) for the database,
-* [Automapper](https://automapper.org/) for mapping simple DTOs and entities,
+* [Mapster](https://github.com/MapsterMapper/Mapster) for mapping DTOs and entities,
 * [FluentValidation](https://fluentvalidation.net/) for validation,
 * [Identity](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity/) for role-based auth using JWT,
 * Custom GlobalExceptionHandler middleware catching and logging exceptions,
@@ -166,6 +165,7 @@ This API is a good starting point for working with CQRS and vertical slice archi
 I tried to keep it simple and easy to adapt, so you can focus on adding the features you need.
 
 
-## External libraries
+## Reduced external libraries
 
 Earlier versions of this project used the MediatR library, but I decided to implement a custom dispatcher to keep the solution free of licensing costs.
+Mapster was chosen over AutoMapper because of its better value and ease.

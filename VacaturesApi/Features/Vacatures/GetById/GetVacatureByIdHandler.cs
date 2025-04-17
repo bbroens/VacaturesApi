@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using Mapster;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Domain;
@@ -12,12 +12,10 @@ namespace VacaturesApi.Features.Vacatures.GetById;
 public class GetVacatureByIdHandler : IRequestHandler<GetVacatureByIdQuery, VacatureDto>
 {
     private readonly IVacatureRepository _repository;
-    private readonly IMapper _mapper;
 
-    public GetVacatureByIdHandler(IVacatureRepository repository, IMapper mapper)
+    public GetVacatureByIdHandler(IVacatureRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
     public async Task<VacatureDto> Handle(GetVacatureByIdQuery request, CancellationToken cancellationToken)
@@ -25,6 +23,6 @@ public class GetVacatureByIdHandler : IRequestHandler<GetVacatureByIdQuery, Vaca
         var vacature = await _repository.GetByIdAsync(request.VacatureId, cancellationToken) 
                        ?? throw new NotFoundException(nameof(Vacature), request.VacatureId);
         
-        return _mapper.Map<VacatureDto>(vacature);
+        return vacature.Adapt<VacatureDto>();
     }
 }

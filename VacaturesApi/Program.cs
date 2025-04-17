@@ -1,6 +1,7 @@
 using Serilog;
 using FluentValidation;
 using System.Reflection;
+using Mapster;
 using VacaturesApi.Common.Dispatcher;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
@@ -11,7 +12,7 @@ using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
 using VacaturesApi.ServiceExtensions;
 
-// Bootstrap logger to log errors during startup. Replaced after by ConfigureSerilog()
+// Bootstrap logger to log errors during startup. Replaced then by ConfigureSerilog()
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -47,8 +48,9 @@ try
     builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
     builder.Services.AddTransient(typeof(IRequestBehavior<,>), typeof(ValidationBehavior<,>));
     
-    // Register Automapper
-    builder.Services.AddAutoMapper(typeof(Program).Assembly);
+    // Add Mapster configuration
+    builder.Services.AddMapster();
+    TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
     
     // Register CQRS Dispatcher and register all request handlers in the assembly
     builder.Services.AddScoped<Dispatcher>();

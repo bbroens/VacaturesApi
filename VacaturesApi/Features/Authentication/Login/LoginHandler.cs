@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using VacaturesApi.Common.Interfaces;
+﻿using VacaturesApi.Common.Interfaces;
 
 namespace VacaturesApi.Features.Authentication.Login;
 
@@ -11,7 +10,7 @@ public class LoginHandler : IRequestHandler<LoginCommand, AuthResponseDto>
 {
     private readonly AuthRepository _authRepository;
 
-    public LoginHandler(AuthRepository repository, IMapper mapper)
+    public LoginHandler(AuthRepository repository)
     {
         _authRepository = repository;
     }

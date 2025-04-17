@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using Mapster;
 using VacaturesApi.Common.Interfaces;
 using VacaturesApi.Domain;
 
@@ -11,12 +11,10 @@ namespace VacaturesApi.Features.Vacatures.Create;
 public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, VacatureDto>
 {
     private readonly IVacatureRepository _repository;
-    private readonly IMapper _mapper;
 
-    public CreateVacatureHandler(IVacatureRepository repository, IMapper mapper)
+    public CreateVacatureHandler(IVacatureRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
     public async Task<VacatureDto> Handle(CreateVacatureCommand request, CancellationToken cancellationToken)
@@ -43,6 +41,6 @@ public class CreateVacatureHandler : IRequestHandler<CreateVacatureCommand, Vaca
         };
 
         var createdVacature = await _repository.AddAsync(vacature, cancellationToken);
-        return _mapper.Map<VacatureDto>(createdVacature);
+        return createdVacature.Adapt<VacatureDto>();
     }
 }
