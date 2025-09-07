@@ -2,6 +2,7 @@
 
 A lean and flexible asp.net REST API which provides "vacatures" as JSON objects and offers CRUD operations. 
 These vacatures can be requested by an HTTP client or front-end. The project includes an http file which you can use to test all endpoints.
+A drone CI build is configured to build and deploy the project to a docker container.
 
 
 ## Description

@@ -1,7 +1,7 @@
 using Serilog;
+using Mapster;
 using FluentValidation;
 using System.Reflection;
-using Mapster;
 using VacaturesApi.Common.Dispatcher;
 using VacaturesApi.Common.Exceptions;
 using VacaturesApi.Persistence.Data;
@@ -12,7 +12,7 @@ using VacaturesApi.Features.Vacatures;
 using VacaturesApi.Persistence.Seeding;
 using VacaturesApi.ServiceExtensions;
 
-// Bootstrap logger to log errors during startup. Replaced then by ConfigureSerilog()
+// Bootstrap logger to log errors during startup. Replaced by ConfigureSerilog()
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .CreateBootstrapLogger();
@@ -25,10 +25,9 @@ try
     
     var builder = WebApplication.CreateBuilder(args);
     
-    // Register our custom global IExceptionHandler
     builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-    // Register services from the ServiceExtensions class
+    // Register ServiceExtensions
     builder.Services.ConfigureSerilog(builder.Configuration);
     builder.Services.ConfigureCors();
     builder.Services.ConfigureIISIntegration();
@@ -38,17 +37,14 @@ try
     builder.Services.ConfigureIdentity();
     builder.Services.ConfigureJwtAuthentication(builder.Configuration);
     
-    // Add services for controllers
     builder.Services.AddControllers();
     
-    // Add Swagger generator
     builder.Services.AddSwaggerGen();
 
     // Add FluentValidation
     builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
     builder.Services.AddTransient(typeof(IRequestBehavior<,>), typeof(ValidationBehavior<,>));
     
-    // Add Mapster configuration
     builder.Services.AddMapster();
     TypeAdapterConfig.GlobalSettings.Scan(Assembly.GetExecutingAssembly());
     
@@ -63,6 +59,7 @@ try
     // ### Configure the HTTP request pipeline
     
     var app = builder.Build();
+    var enableHttpsRedirection = builder.Configuration.GetValue<bool?>("EnableHttpsRedirection") ?? true;
 
     if (app.Environment.IsDevelopment())
     {
@@ -73,17 +70,19 @@ try
     }
     
     app.UseExceptionHandler(b => { });
+    
+    app.UseSerilogRequestLogging();
 
     if (app.Environment.IsProduction())
     {
         app.UseHsts();
     }
 
-    // Write Serilog request events instead of the built-in ones
-    app.UseSerilogRequestLogging();
-    
-    app.UseHttpsRedirection();
-    
+    if (enableHttpsRedirection)
+    {
+        app.UseHttpsRedirection();
+    }
+
     app.UseCors("CorsPolicy");
     
     app.UseRouting();
@@ -103,9 +102,8 @@ try
     app.UseResponseCaching();
 
     app.Run();
-
-    // On application exit
-    Log.Information("Vacatures API stopped cleanly");
+    
+    Log.Information("Vacatures API stopped cleanly.");
     return 0;
 }
 catch (Exception ex)
@@ -115,6 +113,6 @@ catch (Exception ex)
 }
 finally
 {
-    // Write Serilog events to sinks before exit
+    // Write Serilog events to sinks
     Log.CloseAndFlush();
 }
